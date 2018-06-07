@@ -11,7 +11,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.kotcrab.vis.ui.widget.VisProgressBar;
 import com.moemeido.game.Application;
 import com.moemeido.game.entities.IUpgradable;
-import com.moemeido.game.screens.AbstractScreen;
 import com.moemeido.game.utils.LevelScaling;
 import com.moemeido.game.utils.UITools;
 
@@ -35,9 +34,9 @@ public abstract class AbstractWorkingEntity extends Actor implements IUpgradable
     boolean working;
     boolean readyToCollect;
 
-    int intake;
+    int baseIntake;
     int currentIntake;
-    int yield;
+    int baseYield;
     int currentYield;
 
     float currentWorkTime;
@@ -107,12 +106,12 @@ public abstract class AbstractWorkingEntity extends Actor implements IUpgradable
 
             levelBar.setRange(level, boostLevel);
 
-            intake = LevelScaling.calculateGrowth(intake, 1.75f, timesBoosted);
-            yield = LevelScaling.calculateGrowth(yield, 1.75f, timesBoosted);
+            baseIntake = LevelScaling.calculateGrowth(baseIntake, 1.75f, timesBoosted);
+            baseYield = LevelScaling.calculateGrowth(baseYield, 1.75f, timesBoosted);
         }
 
-        currentIntake += intake;
-        currentYield += yield;
+        currentIntake += baseIntake;
+        currentYield += baseYield;
 
         if (totalWorkTime > minWorkTime){
             totalWorkTime -= .05f;

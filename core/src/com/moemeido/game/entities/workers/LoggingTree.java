@@ -17,16 +17,11 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.ObjectMap;
 import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.widget.*;
 import com.moemeido.game.Application;
-import com.moemeido.game.entities.IUpgradable;
-import com.moemeido.game.utils.LevelScaling;
 
 import java.util.Locale;
-import java.util.Map;
 
 public class LoggingTree extends AbstractWorkingEntity {
 
@@ -55,8 +50,8 @@ public class LoggingTree extends AbstractWorkingEntity {
         upgradeCost = 100;
         baseCost = upgradeCost;
 
-        yield = 10;
-        currentYield = yield;
+        baseYield = 10;
+        currentYield = baseYield;
         texScale = 4f;
 
         totalWorkTime = 5f;
@@ -83,11 +78,6 @@ public class LoggingTree extends AbstractWorkingEntity {
 
     public void update(float delta) {
         super.update(delta);
-
-        if(!readyToCollect && !working) {
-            app.gsm.getPlayer().setLogCount(app.prefs.getInteger("playerLogs") + yield);
-            working = true;
-        }
 
         if (app.gsm.hasVisibleWindow())
             upgradeStageButton.setTouchable(Touchable.disabled);
@@ -231,7 +221,7 @@ public class LoggingTree extends AbstractWorkingEntity {
 
     public boolean checkTouch(Vector3 touch) {
         if (bounds.contains(touch.x, touch.y) && readyToCollect && !app.gsm.hasVisibleWindow()) {
-            app.gsm.getPlayer().setLogCount(app.prefs.getInteger("playerLogs") + yield);
+            app.gsm.getPlayer().setLogCount(app.prefs.getInteger("playerLogs") + currentYield);
             readyToCollect = false;
             working = true;
             stateTime = 0f;

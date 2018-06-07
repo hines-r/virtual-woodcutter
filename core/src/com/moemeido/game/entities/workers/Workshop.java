@@ -1,7 +1,6 @@
 package com.moemeido.game.entities.workers;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -18,20 +17,12 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.Array;
 import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.widget.*;
 import com.moemeido.game.Application;
-import com.moemeido.game.entities.IUpgradable;
-import com.moemeido.game.managers.GameScreenManager;
-import com.moemeido.game.screens.AbstractScreen;
-import com.moemeido.game.screens.WorkshopScreen;
-import com.moemeido.game.utils.LevelScaling;
 import com.moemeido.game.utils.LogSpawner;
 
 import java.util.Locale;
-
-import static jdk.nashorn.internal.objects.Global.print;
 
 public class Workshop extends AbstractWorkingEntity  {
 
@@ -65,10 +56,10 @@ public class Workshop extends AbstractWorkingEntity  {
         upgradeCost = 100;
         baseCost = upgradeCost;
 
-        yield = 50;
-        currentYield = yield;
-        intake = 25;
-        currentIntake = intake;
+        baseYield = 50;
+        currentYield = baseYield;
+        baseIntake = 25;
+        currentIntake = baseIntake;
 
         totalWorkTime = 5f;
         currentWorkTime = 0f;
@@ -96,8 +87,8 @@ public class Workshop extends AbstractWorkingEntity  {
         super.update(delta);
 
         // Collects logs from the player automatically if they have enough available
-        if(!readyToCollect && !working && app.prefs.getInteger("playerLogs") >= intake) {
-            app.gsm.getPlayer().setLogCount(app.prefs.getInteger("playerLogs") - intake);
+        if(!readyToCollect && !working && app.prefs.getInteger("playerLogs") >= currentIntake) {
+            app.gsm.getPlayer().setLogCount(app.prefs.getInteger("playerLogs") - currentIntake);
             working = true;
         }
 
@@ -223,8 +214,8 @@ public class Workshop extends AbstractWorkingEntity  {
         VisLabel goldYieldLabel = new VisLabel("Gold Yield: ", labelStyle1);
         VisLabel timeLabel = new VisLabel("Work Time: ", labelStyle1);
 
-        intakeAmountLabel = new VisLabel(String.valueOf(intake), labelStyle1);
-        goldYieldAmountLabel = new VisLabel(String.valueOf(yield), labelStyle1);
+        intakeAmountLabel = new VisLabel(String.valueOf(baseIntake), labelStyle1);
+        goldYieldAmountLabel = new VisLabel(String.valueOf(baseYield), labelStyle1);
         timeAmountLabel = new VisLabel(String.format(Locale.getDefault(), "%.1f", totalWorkTime) + "s", labelStyle1);
 
         windowTable.row();
@@ -281,7 +272,7 @@ public class Workshop extends AbstractWorkingEntity  {
     }
 
     private void collectYields() {
-        app.gsm.getPlayer().setGoldCount(app.prefs.getInteger("playerGold") + yield);
+        app.gsm.getPlayer().setGoldCount(app.prefs.getInteger("playerGold") + currentYield);
         readyToCollect = false;
     }
 
