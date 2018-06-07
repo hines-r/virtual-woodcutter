@@ -12,7 +12,7 @@ import com.moemeido.game.entities.workers.Workshop;
 import com.moemeido.game.screens.LoggingScreen;
 import com.moemeido.game.screens.WorkshopScreen;
 
-public class MyGestureListener implements GestureDetector.GestureListener {
+public abstract class MyGestureListener implements GestureDetector.GestureListener {
 
     private Application app;
     private OrthographicCamera camera;
@@ -22,11 +22,13 @@ public class MyGestureListener implements GestureDetector.GestureListener {
     private float flingVelocityY;
 
     private boolean flingable;
+    private float maxScreenLength;
 
-    protected MyGestureListener(Application app, OrthographicCamera camera, Stage stage) {
+    protected MyGestureListener(Application app, OrthographicCamera camera, Stage stage, float maxScreenLength) {
         this.app = app;
         this.camera = camera;
         this.stage = stage;
+        this.maxScreenLength = maxScreenLength;
     }
 
     @Override
@@ -78,6 +80,7 @@ public class MyGestureListener implements GestureDetector.GestureListener {
 
     @Override
     public boolean pan(float x, float y, float deltaX, float deltaY) {
+
         if (flingVelocityX != 0f || flingVelocityY != 0f) {
             flingVelocityX = 0f;
             flingVelocityY = 0f;
@@ -139,9 +142,9 @@ public class MyGestureListener implements GestureDetector.GestureListener {
     }
 
     public void keepCameraInBounds() {
-        if (camera.position.y > Application.V_HEIGHT * 2) {
-            camera.position.y = Application.V_HEIGHT * 2;
-            stage.getCamera().position.y = Application.V_HEIGHT * 2;
+        if (camera.position.y > Application.V_HEIGHT * maxScreenLength) {
+            camera.position.y = Application.V_HEIGHT * maxScreenLength;
+            stage.getCamera().position.y = Application.V_HEIGHT * maxScreenLength;
         }
 
         if (camera.position.y < Application.V_HEIGHT / 2) {

@@ -52,7 +52,7 @@ public class LoggingTree extends AbstractWorkingEntity {
 
         baseYield = 10;
         currentYield = baseYield;
-        texScale = 4f;
+        texScale = 3.5f;
 
         totalWorkTime = 5f;
         currentWorkTime = 0f;
@@ -188,6 +188,10 @@ public class LoggingTree extends AbstractWorkingEntity {
                 if (app.prefs.getInteger("playerGold") >= upgradeCost) {
                     app.gsm.getPlayer().setGoldCount(app.prefs.getInteger("playerGold") - upgradeCost);
                     upgrade();
+                }
+                else{
+                    System.out.println("Not enough gold!");
+                    dialog.displayDialogWindow(stage);
                 }
             }
         });

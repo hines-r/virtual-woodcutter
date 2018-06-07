@@ -67,7 +67,7 @@ public class WorkshopScreen extends AbstractScreen {
         dynamicStage.getCamera().position.set(Application.V_WIDTH / 2, Application.V_HEIGHT / 2, 0);
         dynamicStage.getCamera().update();
 
-        myGestureListener = new MyGestureListener(app, camera, dynamicStage){
+        myGestureListener = new MyGestureListener(app, camera, dynamicStage, 2){
             @Override
             public boolean tap(float x, float y, int count, int button) {
                 touch.x = Gdx.input.getX();

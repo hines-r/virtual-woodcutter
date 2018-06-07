@@ -29,7 +29,7 @@ public class LoggingScreen extends AbstractScreen {
     private MyGestureListener myGestureListener;
 
     private Plot plot;
-    private TextureRegion bg1, bg2;
+    private TextureRegion bg1, bg2, bg3;
     private Array<LoggingTree> trees;
     private Array<ActorLogLogging> logs;
 
@@ -43,10 +43,11 @@ public class LoggingScreen extends AbstractScreen {
         TextureAtlas atlas = app.assets.get("img/sheet.pack", TextureAtlas.class);
         bg1 = atlas.findRegion("grass_bg2");
         bg2 = atlas.findRegion("grass_bg2");
+        bg3 = atlas.findRegion("grass_bg2");
 
         trees = new Array<LoggingTree>();
 
-        plot = new Plot(app, this, stage, dynamicStage, viewport.getWorldWidth() / 2, viewport.getWorldHeight() / 4f, Plot.PlotType.LOGGING);
+        plot = new Plot(app, this, stage, dynamicStage, viewport.getWorldWidth() / 2, viewport.getWorldHeight() / 3f, Plot.PlotType.LOGGING);
 
         // Checks to see if there was any previous trees within the trees array and adds them back
         if(app.prefs.getInteger("loggingTreeCount") > 0)
@@ -57,7 +58,14 @@ public class LoggingScreen extends AbstractScreen {
 
     @Override
     public void show() {
-        myGestureListener = new MyGestureListener(app, camera, dynamicStage){
+        // places camera on default position upon entering the screen
+        camera.position.set(Application.V_WIDTH / 2, Application.V_HEIGHT / 2, 0);
+        camera.update();
+
+        dynamicStage.getCamera().position.set(Application.V_WIDTH / 2, Application.V_HEIGHT / 2, 0);
+        dynamicStage.getCamera().update();
+
+        myGestureListener = new MyGestureListener(app, camera, dynamicStage, 3f){
             @Override
             public boolean tap(float x, float y, int count, int button) {
                 touch.x = Gdx.input.getX();
@@ -138,6 +146,7 @@ public class LoggingScreen extends AbstractScreen {
         app.batch.draw(bg1, 0, 0, Application.V_WIDTH, Application.V_HEIGHT);
         app.batch.draw(bg2, 0, Application.V_HEIGHT, Application.V_WIDTH, Application.V_HEIGHT);
         app.batch.draw(bg2, 0, Application.V_HEIGHT * 2, Application.V_WIDTH, Application.V_HEIGHT);
+        app.batch.draw(bg3, 0, Application.V_HEIGHT * 3, Application.V_WIDTH, Application.V_HEIGHT);
 
         for (LoggingTree tree : trees)
             tree.render(app.batch);
