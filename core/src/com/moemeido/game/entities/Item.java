@@ -3,6 +3,7 @@ package com.moemeido.game.entities;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.moemeido.game.Application;
+import com.moemeido.game.managers.GameScreenManager;
 import com.moemeido.game.utils.LevelScaling;
 
 public class Item {
@@ -15,14 +16,15 @@ public class Item {
     private int itemCost;
     private int baseCost;
     private int itemLevel;
-    private ItemID itemId;
 
     private int maxLevel;
     private float growthModifier;
 
     private String description;
+    private String currentStat;
 
     private ItemID id;
+
     public enum ItemID {
         HATCHET,
         BOOTS,
@@ -32,7 +34,6 @@ public class Item {
 
     public Item(Application app, ItemID itemId) {
         this.app = app;
-        this.itemId = itemId;
 
         TextureAtlas atlas = app.assets.get("img/sheet.pack", TextureAtlas.class);
 
@@ -73,6 +74,17 @@ public class Item {
         maxLevel = 10;
     }
 
+    public void updatePlayerStat(){
+        switch (id) {
+            case HATCHET:
+                currentStat = "Current strength: " + app.gsm.getPlayer().getStrength();
+                break;
+            case BOOTS:
+                currentStat = "Current speed: " + app.gsm.getPlayer().getMovementSpeed();
+                break;
+        }
+    }
+
     /**
      * Upgrades the appropriate attributes according to the unique item identifier.
      * This will also scale the items next upgrade cost by the growth modifier.
@@ -89,6 +101,8 @@ public class Item {
                 app.gsm.getPlayer().setMovementSpeed(app.gsm.getPlayer().getMovementSpeed() + 1);
                 break;
         }
+
+        updatePlayerStat();
     }
 
     public TextureRegion getItemTex() {
@@ -118,4 +132,8 @@ public class Item {
     public int getMaxLevel() { return maxLevel; }
 
     public String getDescription() { return description; }
+
+    public String getCurrentStat() {
+        return currentStat;
+    }
 }

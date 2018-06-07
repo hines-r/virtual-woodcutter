@@ -104,8 +104,8 @@ public class ShopScreen extends AbstractScreen {
         scrollableTable.setDebug(false);
 
         final Array<Item> items = new Array<Item>();
-        items.add(new Item(app, Item.ItemID.HATCHET));
-        items.add(new Item(app, Item.ItemID.BOOTS));
+        //items.add(new Item(app, Item.ItemID.HATCHET));
+        //items.add(new Item(app, Item.ItemID.BOOTS));
 
         for(int i = 0; i < items.size; i ++) {
             Image img = new Image(items.get(i).getItemTex());

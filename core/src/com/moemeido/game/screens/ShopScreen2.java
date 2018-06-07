@@ -20,7 +20,6 @@ import com.moemeido.game.Application;
 import com.moemeido.game.entities.Item;
 import com.moemeido.game.managers.MyInputProcessor;
 import com.moemeido.game.screens.huds.HUD;
-import com.moemeido.game.screens.huds.ShopHUD;
 import com.moemeido.game.utils.UITools;
 
 public class ShopScreen2 extends AbstractScreen {
@@ -31,6 +30,9 @@ public class ShopScreen2 extends AbstractScreen {
 
     private UITools uiTools;
 
+    private Array<Item> items;
+    private Array<VisLabel> currentBonusLabels;
+
     public ShopScreen2(Application app)
     {
         super(app);
@@ -38,6 +40,9 @@ public class ShopScreen2 extends AbstractScreen {
         glyphLayout = new GlyphLayout();
         TextureAtlas atlas = app.assets.get("img/sheet.pack", TextureAtlas.class);
         bg = atlas.findRegion("plank_bg2");
+
+        items = new Array<Item>();
+        currentBonusLabels = new Array<VisLabel>();
 
         setupScrollPane();
         uiTools = new UITools(app, stage);
@@ -54,6 +59,8 @@ public class ShopScreen2 extends AbstractScreen {
         app.shapeRenderer.setProjectionMatrix(camera.combined);
 
         hud.initXPBar();
+
+        updateCurrentStats();
     }
 
     private void setupScrollPane() {
@@ -61,7 +68,7 @@ public class ShopScreen2 extends AbstractScreen {
         stageTable.setFillParent(true);
         stageTable.setDebug(false);
 
-        final Array<Item> items = new Array<Item>();
+        items = new Array<Item>();
 
         // For each item defined within the Item class, place within the scrollable table
         for (int i = 0; i < Item.ItemID.values().length; i++){
@@ -89,9 +96,10 @@ public class ShopScreen2 extends AbstractScreen {
             scrollableTable.addSeparator(true).pad(5);
 
             VisTable textTable = new VisTable();
+            textTable.setDebug(false);
 
             VisLabel itemNameLabel = new VisLabel(items.get(i).getItemName(), labelStyle1);
-            textTable.add(itemNameLabel).expandX().top().left();
+            textTable.add(itemNameLabel).expandX().left();
             textTable.row();
 
             VisLabel descriptionLabel = new VisLabel("\nThis is a test.\nThis is a new line.", labelStyle2);
@@ -99,7 +107,12 @@ public class ShopScreen2 extends AbstractScreen {
             textTable.add(descriptionLabel).expandX().left();
             textTable.row();
 
-            scrollableTable.add(textTable).expandX().top().left().pad(5);
+            final VisLabel currentBonusLabel = new VisLabel(items.get(i).getCurrentStat(), labelStyle2);
+            currentBonusLabels.add(currentBonusLabel);
+            textTable.add(currentBonusLabel).expand().bottom().left();
+            textTable.row();
+
+            scrollableTable.add(textTable).expandX().fill().pad(5);
 
             final VisTextButton upgradeButton = new VisTextButton("Upgrade!\n" + items.get(i).getItemCost() + "g", buttonStyle1);
             scrollableTable.add(upgradeButton).right().pad(5).width(100).height(75);
@@ -118,6 +131,7 @@ public class ShopScreen2 extends AbstractScreen {
                         if (app.gsm.getPlayer().getGoldCount() >= items.get(finalI).getItemCost()) {
                             app.gsm.getPlayer().setGoldCount(app.gsm.getPlayer().getGoldCount() - items.get(finalI).getItemCost());
                             items.get(finalI).upgrade();
+                            currentBonusLabel.setText(items.get(finalI).getCurrentStat());
                             upgradeButton.setText("Upgrade!\n" + items.get(finalI).getItemCost() + "g");
                             levelBar.setValue(items.get(finalI).getItemLevel() - 1);
                         } else {
@@ -151,6 +165,17 @@ public class ShopScreen2 extends AbstractScreen {
         hud.update();
 
         app.gsm.globalUpdate(delta);
+    }
+
+    /**
+     * Gets the players stat that a particular item modifies and updates
+     * item labels accordingly.
+     */
+    private void updateCurrentStats(){
+        for (int i = 0; i < items.size; i++) {
+            items.get(i).updatePlayerStat();
+            currentBonusLabels.get(i).setText(items.get(i).getCurrentStat());
+        }
     }
 
     @Override
