@@ -130,6 +130,15 @@ public class PlayScreen extends AbstractScreen {
         touch.y = Gdx.input.getY();
         camera.unproject(touch);
 
+        // Checks if a power-up is touched
+        // If touched, remove from active array and add to consumed array
+        if (Gdx.input.justTouched()) {
+            for (PowerUp p : powerUps) {
+                if(p.checkTouch(touch, player))
+                    return;
+            }
+        }
+
         // Checks if the player has the chainsaw first
         if (player.isAutoChopping() && inputProcessor.isDown() && !player.isMoving()) {
 
@@ -150,15 +159,6 @@ public class PlayScreen extends AbstractScreen {
             tree.setHitsToBreak(tree.getHitsToBreak() - player.getCurrentStrength());
 
             checkTree();
-        }
-
-        // Checks if a power-up is touched
-        // If touched, remove from active array and add to consumed array
-        if (Gdx.input.justTouched()) {
-            for (PowerUp p : powerUps) {
-                if(p.checkTouch(touch, player))
-                    break;
-            }
         }
     }
 
