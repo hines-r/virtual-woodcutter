@@ -319,7 +319,7 @@ public class PlayScreen extends AbstractScreen {
      * Checks if the tree is ready to drop loot.
      */
     private void checkTree() {
-        if (tree.isReadyToDrop()) {
+        if (tree.getHitsToBreak() <= 0) {
             tree.dropLogs(logPool, logs, tree.getLogsToDrop(), platform.getPosition());
 
             for (Log log : logs) {
