@@ -45,6 +45,7 @@ public class Player {
     private Rectangle bounds;
     private float movementSpeed;
     private boolean moving;
+    private boolean isBuff;
 
     private HashMap<PowerUp.POWER, PowerUp> powers;
 
@@ -100,10 +101,12 @@ public class Player {
     }
 
     public void update(float delta, Tree tree) {
-        if (powers.containsKey(PowerUp.POWER.MIGHT)) {
-            currentStrength = 3;
+        if (powers.containsKey(PowerUp.POWER.MIGHT) && !isBuff) {
+            isBuff = true;
+            currentStrength += 3;
         }
         else {
+            isBuff = false;
             currentStrength = strength;
         }
 
