@@ -22,7 +22,7 @@ public class ActorLogWorkshop extends AbstractActor {
 
         TextureAtlas atlas = app.assets.get("img/sheet.pack", TextureAtlas.class);
         img = new Image(atlas.findRegion("log1"));
-        img.setPosition(origin.x + MathUtils.random(-35, 30), origin.y + MathUtils.random(-35, 30));
+        img.setPosition(origin.x, origin.y);
         imgScale = 1.5f;
         img.setSize(img.getWidth() * imgScale, img.getHeight() * imgScale);
         img.setTouchable(Touchable.disabled);
