@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.moemeido.game.Application;
-import com.moemeido.game.screens.huds.HUD;
+import com.moemeido.game.screens.HUD;
 
 public class ActorLogLogging extends AbstractActor {
 

@@ -19,7 +19,6 @@ import com.moemeido.game.entities.workers.LoggingTree;
 import com.moemeido.game.entities.workers.Plot;
 import com.moemeido.game.managers.MyGestureListener;
 import com.moemeido.game.managers.MyInputProcessor;
-import com.moemeido.game.screens.huds.HUD;
 
 public class LoggingScreen extends AbstractScreen {
 

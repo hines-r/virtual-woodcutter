@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -16,13 +15,10 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.moemeido.game.Application;
 import com.moemeido.game.entities.actors.ActorCoin;
-import com.moemeido.game.entities.workers.AbstractWorkingEntity;
-import com.moemeido.game.entities.workers.LoggingTree;
 import com.moemeido.game.entities.workers.Plot;
 import com.moemeido.game.entities.workers.Workshop;
 import com.moemeido.game.managers.MyGestureListener;
 import com.moemeido.game.managers.MyInputProcessor;
-import com.moemeido.game.screens.huds.HUD;
 
 public class WorkshopScreen extends AbstractScreen {
 

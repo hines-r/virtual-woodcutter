@@ -1,7 +1,6 @@
 package com.moemeido.game.entities.actors;
 
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -9,9 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.moemeido.game.Application;
-import com.moemeido.game.screens.huds.HUD;
-
-import static com.moemeido.game.utils.B2DVars.PPM;
+import com.moemeido.game.screens.HUD;
 
 public class ActorCoin extends AbstractActor {
 

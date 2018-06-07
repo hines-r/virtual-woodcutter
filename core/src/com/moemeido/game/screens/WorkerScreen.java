@@ -25,7 +25,6 @@ import com.moemeido.game.entities.CollectionBox;
 import com.moemeido.game.entities.Worker;
 import com.moemeido.game.entities.WorkerTree;
 import com.moemeido.game.managers.MyInputProcessor;
-import com.moemeido.game.screens.huds.HUD;
 import com.moemeido.game.utils.UITools;
 
 import java.util.Locale;

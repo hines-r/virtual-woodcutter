@@ -1,4 +1,4 @@
-package com.moemeido.game.screens.huds;
+package com.moemeido.game.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;

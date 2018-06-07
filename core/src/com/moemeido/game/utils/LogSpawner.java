@@ -6,8 +6,6 @@ import com.badlogic.gdx.utils.Array;
 import com.moemeido.game.Application;
 import com.moemeido.game.entities.actors.ActorLogWorkshop;
 import com.moemeido.game.entities.workers.Workshop;
-import com.moemeido.game.entities.actors.ActorLogLogging;
-import com.moemeido.game.screens.huds.HUD;
 
 public class LogSpawner {
 

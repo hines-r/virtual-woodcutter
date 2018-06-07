@@ -19,7 +19,6 @@ import com.moemeido.game.entities.Player;
 import com.moemeido.game.entities.PowerUp;
 import com.moemeido.game.entities.Tree;
 import com.moemeido.game.managers.MyInputProcessor;
-import com.moemeido.game.screens.huds.HUD;
 import com.moemeido.game.utils.PowerUpSpawner;
 
 import java.util.Locale;

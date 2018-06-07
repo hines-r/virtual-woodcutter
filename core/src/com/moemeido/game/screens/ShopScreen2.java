@@ -19,7 +19,6 @@ import com.kotcrab.vis.ui.widget.*;
 import com.moemeido.game.Application;
 import com.moemeido.game.entities.Item;
 import com.moemeido.game.managers.MyInputProcessor;
-import com.moemeido.game.screens.huds.HUD;
 import com.moemeido.game.utils.UITools;
 
 public class ShopScreen2 extends AbstractScreen {

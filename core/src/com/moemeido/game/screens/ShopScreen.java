@@ -17,11 +17,10 @@ import com.kotcrab.vis.ui.widget.*;
 import com.moemeido.game.Application;
 import com.moemeido.game.entities.Item;
 import com.moemeido.game.managers.MyInputProcessor;
-import com.moemeido.game.screens.huds.HUD;
 
 public class ShopScreen extends AbstractScreen {
 
-    private com.moemeido.game.screens.huds.HUD hud;
+    private HUD hud;
     private TextureRegion bg;
     private GlyphLayout glyphLayout;
 
