@@ -44,7 +44,7 @@ public class LoggingTree extends AbstractWorkingEntity {
         collectScale = 3f;
 
         level = 1;
-        boostLevel = 25;
+        boostLevel = 5;
         baseBoostLevel = boostLevel;
 
         upgradeCost = 100;
@@ -155,6 +155,7 @@ public class LoggingTree extends AbstractWorkingEntity {
         upgradeWindow.add(upgradeTable).width(450);
 
         levelBar = new VisProgressBar(0, boostLevel, 1, false);
+        levelBar.setRange(level, boostLevel);
         upgradeTable.add(levelBar).expandX().fillX().pad(15).padTop(30).colspan(2);
         upgradeTable.row();
 

@@ -50,7 +50,7 @@ public class Workshop extends AbstractWorkingEntity  {
         collectScale = 3f;
 
         level = 1;
-        boostLevel = 25;
+        boostLevel = 5;
         baseBoostLevel = boostLevel;
 
         upgradeCost = 100;
@@ -203,7 +203,7 @@ public class Workshop extends AbstractWorkingEntity  {
         });
 
         levelBar = new VisProgressBar(0, boostLevel, 1, false);
-
+        levelBar.setRange(level, boostLevel);
         VisTable windowTable = new VisTable();
         windowTable.setDebug(false);
         windowTable.top();
