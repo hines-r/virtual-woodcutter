@@ -121,15 +121,13 @@ public class ShopScreen2 extends AbstractScreen {
             // Starts at a minimum of 1 because items start at level 1
             final VisProgressBar levelBar = new VisProgressBar(0, items.get(i).getMaxLevel(), 1, false);
 
-            // If the item has already been upgraded, sets the value of the level bar
-
             if (items.get(i).getItemLevel() == items.get(i).getMaxLevel()){
                 levelBar.setValue(items.get(i).getItemLevel() + 1);
                 upgradeButton.setDisabled(true);
                 upgradeButton.setText("Max\nLevel!");
             }
-            else if (items.get(i).getItemLevel() > 1){
-                levelBar.setValue(items.get(i).getItemLevel() - 1);
+            else{
+                levelBar.setValue(items.get(i).getItemLevel());
             }
 
             scrollableTable.add(levelBar).expandX().fillX().colspan(5).pad(5);
@@ -139,22 +137,25 @@ public class ShopScreen2 extends AbstractScreen {
             upgradeButton.addListener(new ClickListener(){
                 @Override
                 public void clicked (InputEvent event, float x, float y) {
+                    if (items.get(finalI).getItemLevel() == items.get(finalI).getMaxLevel())
+                        return;
+
                     if (items.get(finalI).getItemLevel() < items.get(finalI).getMaxLevel()) {
                         if (app.gsm.getPlayer().getGoldCount() >= items.get(finalI).getItemCost()) {
                             app.gsm.getPlayer().setGoldCount(app.gsm.getPlayer().getGoldCount() - items.get(finalI).getItemCost());
                             items.get(finalI).upgrade();
                             currentBonusLabel.setText(items.get(finalI).getCurrentStat());
                             upgradeButton.setText("Upgrade!\n" + items.get(finalI).getItemCost() + "g");
-                            levelBar.setValue(items.get(finalI).getItemLevel() - 1);
+                            levelBar.setValue(items.get(finalI).getItemLevel());
+
+                            if (items.get(finalI).getItemLevel() == items.get(finalI).getMaxLevel()){
+                                upgradeButton.setDisabled(true);
+                                upgradeButton.setText("Max\nLevel!");
+                            }
                         } else {
                             uiTools.displayDialogWindow(stage);
                         }
-                    } else {
-                        levelBar.setValue(items.get(finalI).getItemLevel() + 1);
-                        upgradeButton.setDisabled(true);
-                        upgradeButton.setText("Max\nLevel!");
                     }
-
                 }
             });
         }

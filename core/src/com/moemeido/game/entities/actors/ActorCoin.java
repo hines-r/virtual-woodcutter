@@ -24,7 +24,6 @@ public class ActorCoin extends AbstractActor {
 
         TextureAtlas atlas = app.assets.get("img/sheet.pack", TextureAtlas.class);
         img = new Image(atlas.findRegion("coin2"));
-        imgScale = 1f;
         img.setSize(hud.getUiCoin().getWidth(), hud.getUiCoin().getHeight());
         img.setPosition(origin.x + MathUtils.random(-35, 30), origin.y + MathUtils.random(-35, 30));
         img.setTouchable(Touchable.disabled);

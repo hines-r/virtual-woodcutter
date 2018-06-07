@@ -54,7 +54,7 @@ public class PlayScreen extends AbstractScreen {
     private Label autoTimeLabel, mightTimeLabel, doubleTimeLabel;
 
     private Table debugTable;
-    private Label nextPowerLabel, xpRequiredLabel;
+    private Label nextPowerLabel, xpRequiredLabel, strengthLabel;
     private Label treeHitsLabel, treeLifeLabel, logsDropLabel;
 
     public PlayScreen(final Application app) {
@@ -147,7 +147,7 @@ public class PlayScreen extends AbstractScreen {
             if(player.isReadyToSwing()) {
                 player.setReadyToSwing(false);
                 player.setSwingTimer(0);
-                tree.setHitsToBreak(tree.getHitsToBreak() - player.getStrength());
+                tree.setHitsToBreak(tree.getHitsToBreak() - player.getCurrentStrength());
             }
 
             checkTree();
@@ -255,6 +255,7 @@ public class PlayScreen extends AbstractScreen {
         Label.LabelStyle labelStyle1 = new Label.LabelStyle(app.fonts.font20, Color.WHITE);
         nextPowerLabel = new Label("Next power-up: " + spawner.getTimeToSpawn(), labelStyle1);
         xpRequiredLabel = new Label("Next level: " + app.prefs.getInteger("playerXpNeeded") + "xp", labelStyle1);
+        strengthLabel = new Label("Player strength: " + player.getCurrentStrength(), labelStyle1);
         logsDropLabel = new Label("Logs to drop: " + tree.getLogsToDrop(), labelStyle1);
         treeLifeLabel = new Label("Tree life: " + tree.getCurrentLife(), labelStyle1);
         treeHitsLabel = new Label("Hits to break: " + tree.getHitsToBreak(), labelStyle1);
@@ -271,6 +272,8 @@ public class PlayScreen extends AbstractScreen {
         debugTable.row();
         debugTable.add(xpRequiredLabel).padLeft(18f).padBottom(5f).align(Align.left).expandX();
         debugTable.row();
+        debugTable.add(strengthLabel).padLeft(18f).padBottom(5f).align(Align.left).expandX();
+        debugTable.row();
         debugTable.add(logsDropLabel).padLeft(18f).padBottom(5f).align(Align.left).expandX();
         debugTable.row();
         debugTable.add(treeLifeLabel).padLeft(18f).padBottom(5f).align(Align.left).expandX();
@@ -285,6 +288,7 @@ public class PlayScreen extends AbstractScreen {
     private void updateDebugTable() {
         nextPowerLabel.setText("Next power-up: " + spawner.getTimeToSpawn());
         xpRequiredLabel.setText("Next level: " + player.getExperienceNeeded() + "xp");
+        strengthLabel.setText("Player strength: " + player.getCurrentStrength());
         logsDropLabel.setText("Logs to drop: " + tree.getLogsToDrop());
         treeLifeLabel.setText("Tree life: " + tree.getCurrentLife());
         treeHitsLabel.setText("Hits to break: " + tree.getHitsToBreak());

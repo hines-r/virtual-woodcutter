@@ -74,12 +74,19 @@ public class Player {
 
         currentStrength = strength;
 
+        movementSpeed = app.prefs.getFloat("playerMovSpeed");
+
+        if (movementSpeed <= 0) {
+            movementSpeed = 300f;
+            app.prefs.putFloat("playerMovSpeed", movementSpeed).flush(); // sets player prefs movement speed if it's the first initialization
+            System.out.println("Setting speed to: " + movementSpeed);
+        }
+
         goldCount = app.prefs.getInteger("playerGold");
         logCount = app.prefs.getInteger("playerLogs");
-
         level = app.prefs.getInteger("playerLevel");
-
         experience = app.prefs.getInteger("playerXp");
+
         growthModifier = 1.25f;
         experienceNeeded = LevelScaling.computeExperiencePoints(level, growthModifier);
         setExperienceNeeded(experienceNeeded);
@@ -97,7 +104,6 @@ public class Player {
                 atlas.findRegion("player").getRegionWidth() * playerScale,
                 atlas.findRegion("player").getRegionHeight() * playerScale);
 
-        movementSpeed = 300f;
     }
 
     public void update(float delta, Tree tree) {
@@ -105,7 +111,7 @@ public class Player {
             isBuff = true;
             currentStrength += 3;
         }
-        else {
+        else if(!powers.containsKey(PowerUp.POWER.MIGHT)){
             isBuff = false;
             currentStrength = strength;
         }
@@ -184,9 +190,6 @@ public class Player {
         return moving;
     }
 
-    public float getMovementSpeed() {
-        return movementSpeed;
-    }
 
     public boolean isAutoChopping() {
         return autoChop;
@@ -266,10 +269,17 @@ public class Player {
     public void setStrength(float strength) {
         app.prefs.putFloat("playerStrength", strength).flush();
         this.strength = strength;
+        currentStrength = strength;
+        isBuff = false; // Used to reset the might buff if currently active and the player upgrades the hatchet
     }
 
     public void setMovementSpeed(float movementSpeed) {
+        app.prefs.putFloat("playerMovSpeed", movementSpeed).flush();
         this.movementSpeed = movementSpeed;
+    }
+
+    public float getMovementSpeed() {
+        return movementSpeed;
     }
 
     public float getStrength() {

@@ -66,8 +66,8 @@ public class Item {
         }
 
         baseCost = itemCost;
-        growthModifier = 1.85f;
-        maxLevel = 10;
+        growthModifier = 1.15f;
+        maxLevel = 9;
 
         // only adds item to prefs if they have been upgraded
         if (isInPrefs()){
@@ -75,7 +75,7 @@ public class Item {
             return;
         }
         else{
-            itemLevel = 1;
+            itemLevel = 0;
         }
     }
 
@@ -113,10 +113,10 @@ public class Item {
 
         switch (id) {
             case HATCHET:
-                app.gsm.getPlayer().setStrength(app.gsm.getPlayer().getStrength() + 1);
+                app.gsm.getPlayer().setStrength(app.gsm.getPlayer().getStrength() + 1f);
                 break;
             case BOOTS:
-                app.gsm.getPlayer().setMovementSpeed(app.gsm.getPlayer().getMovementSpeed() + 25);
+                app.gsm.getPlayer().setMovementSpeed(app.gsm.getPlayer().getMovementSpeed() + 10f);
                 break;
         }
 
