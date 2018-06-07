@@ -202,7 +202,7 @@ public class Player {
     public void setChopping(boolean chopping) { isChopping = chopping; }
 
     public int getGoldCount() {
-        return goldCount;
+        return app.prefs.getInteger("playerGold");
     }
 
     public void buyItem(int itemCost) {
