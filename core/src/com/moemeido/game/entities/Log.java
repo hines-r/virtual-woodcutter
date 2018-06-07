@@ -32,7 +32,6 @@ public class Log implements Poolable {
     private float logHeight;
     private Vector2 position;
 
-    private int sellValue;
     private int logYield;
 
     private float life; // Amount of time the log remains on the screen
@@ -51,8 +50,7 @@ public class Log implements Poolable {
         int maxYield = 10;
         logYield = MathUtils.random(minYield,maxYield);
 
-        sellValue = 5; // Logs can sell for this much
-        life = 3.25f; // Logs should remain on the screen for ~4 seconds
+        life = 3.25f; // How long logs remain on the screen
         currentLife = life;
 
         logScale = 2f;

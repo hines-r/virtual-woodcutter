@@ -1,7 +1,6 @@
 package com.moemeido.game.entities.actors;
 
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -11,35 +10,39 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.moemeido.game.Application;
 import com.moemeido.game.screens.huds.HUD;
 
-import static com.moemeido.game.utils.B2DVars.PPM;
-
-public class ActorCoin extends AbstractActor {
+public class ActorLogLogging extends AbstractActor {
 
     private HUD hud;
     private float speed;
 
-    public ActorCoin(Application app, Stage stage, Vector2 target, Vector2 origin, HUD hud) {
+    public ActorLogLogging(Application app, Stage stage, Vector2 target, HUD hud) {
         super(app, stage, target);
-        this.origin = origin;
         this.hud = hud;
+        this.target = hud.getLogPosition();
 
         TextureAtlas atlas = app.assets.get("img/sheet.pack", TextureAtlas.class);
-        img = new Image(atlas.findRegion("coin2"));
-        imgScale = 1f;
-        img.setSize(hud.getUiCoin().getWidth(), hud.getUiCoin().getHeight());
-        img.setPosition(origin.x + MathUtils.random(-35, 30), origin.y + MathUtils.random(-35, 30));
+        img = new Image(atlas.findRegion("log1"));
+
+        float randPosX = -35;
+        float randPosY = 30;
+        img.setPosition(origin.x + MathUtils.random(randPosX, randPosY), origin.y + MathUtils.random(randPosX, randPosY));
+
+        imgScale = 1.5f;
+        img.setSize(img.getWidth() * imgScale, img.getHeight() * imgScale);
         img.setTouchable(Touchable.disabled);
-
-        speed = 45f; // pixels per second
-
-        bounds = new Rectangle();
         stage.addActor(img);
+
+        bounds = new Rectangle(img.getX(), img.getY(), img.getWidth(), img.getHeight());
+
+        speed = 45f;
     }
 
     public void update(float delta) {
+        target.x = hud.getLogPosition().x;
+        target.y = hud.getLogPosition().y;
         bounds.setPosition(img.getX() + img.getWidth() / 4, img.getY() + img.getHeight() / 4);
 
-        if (hud.getCoinBounds().contains(bounds.x, bounds.y))
+        if (hud.getLogBounds().contains(bounds.x, bounds.y))
             isReadyToDestroy = true;
 
         else if (readyToMove)
@@ -55,12 +58,12 @@ public class ActorCoin extends AbstractActor {
         return new Vector2(img.getX(), img.getY());
     }
 
-    public void setReadyToMove(boolean readyToMove) {
-        this.readyToMove = readyToMove;
-    }
-
     public Image getImage() {
         return img;
+    }
+
+    public void setReadyToMove(boolean readyToMove) {
+        this.readyToMove = readyToMove;
     }
 
     public boolean isReadyToDestroy() {

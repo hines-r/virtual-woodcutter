@@ -1,6 +1,7 @@
 package com.moemeido.game.entities.workers;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -22,6 +23,7 @@ import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.widget.*;
 import com.moemeido.game.Application;
 import com.moemeido.game.entities.IUpgradable;
+import com.moemeido.game.managers.GameScreenManager;
 import com.moemeido.game.screens.AbstractScreen;
 import com.moemeido.game.screens.WorkshopScreen;
 import com.moemeido.game.utils.LevelScaling;

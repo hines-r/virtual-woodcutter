@@ -59,7 +59,7 @@ public class LoggingTree extends AbstractWorkingEntity implements IUpgradable {
         currentYield = yield;
         texScale = 4f;
 
-        totalWorkTime = 25f;
+        totalWorkTime = 5f;
         currentWorkTime = 0f;
         minWorkTime = 3f;
 

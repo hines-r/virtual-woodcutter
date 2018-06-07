@@ -1,5 +1,7 @@
 package com.moemeido.game.entities.actors;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -22,38 +24,34 @@ public abstract class AbstractActor implements Pool.Poolable {
     boolean isReadyToDestroy;
     boolean readyToMove;
 
-    float speed;
-
     Rectangle bounds;
-    Rectangle targetBounds;
 
-    AbstractActor(Application app, Stage stage, Vector2 origin, Vector2 target) {
+    AbstractActor(Application app, Stage stage, Vector2 target) {
         this.app = app;
         this.stage = stage;
-        this.origin = origin;
         this.target = target;
-    }
-
-    AbstractActor(Application app, Stage stage, Vector2 origin, HUD hud) {
-        this.app = app;
-        this.stage = stage;
-        this.origin = origin;
     }
 
     public abstract void update(float delta);
 
-    private void moveToTarget() {
-
+    /**
+     * Used to render the bounds of the actor. Used for debugging.
+     */
+    public void renderBounds() {
+        app.shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        app.shapeRenderer.setColor(Color.RED);
+        app.shapeRenderer.rect(bounds.x, bounds.y, img.getWidth(), img.getHeight());
+        app.shapeRenderer.end();
     }
 
-    private void moveToHud(Image img, Vector2 target, float speed, float delta) {
+    void moveToTarget(Image img, Vector2 target, float speed, float delta) {
         Vector2 dir = new Vector2(target.x - img.getX(), target.y - img.getY());
         float hyp = (float) Math.sqrt((dir.x * dir.x) + (dir.y * dir.y));
-        float dirx = dir.x /= hyp;
-        float diry = dir.y /= hyp;
+        float dirX = dir.x /= hyp;
+        float dirY = dir.y /= hyp;
 
-        img.setX(img.getX() + (dirx * PPM * speed) * delta);
-        img.setY(img.getY() + (diry * PPM * speed) * delta);
+        img.setX(img.getX() + (dirX * PPM * speed) * delta);
+        img.setY(img.getY() + (dirY * PPM * speed) * delta);
     }
 
     public abstract void reset();
@@ -62,35 +60,11 @@ public abstract class AbstractActor implements Pool.Poolable {
         return img;
     }
 
-    public float getImgScale() {
-        return imgScale;
-    }
-
-    public Vector2 getOrigin() {
-        return origin;
-    }
-
-    public Vector2 getTarget() {
-        return target;
-    }
-
     public boolean isReadyToDestroy() {
         return isReadyToDestroy;
     }
 
-    public boolean isReadyToMove() {
-        return readyToMove;
-    }
-
-    public float getSpeed() {
-        return speed;
-    }
-
     public Rectangle getBounds() {
         return bounds;
-    }
-
-    public Rectangle getTargetBounds() {
-        return targetBounds;
     }
 }

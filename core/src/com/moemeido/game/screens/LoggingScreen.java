@@ -9,18 +9,14 @@ import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Action;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.moemeido.game.Application;
-import com.moemeido.game.entities.actors.ActorLog;
+import com.moemeido.game.entities.actors.ActorLogLogging;
 import com.moemeido.game.entities.workers.LoggingTree;
 import com.moemeido.game.entities.workers.Plot;
-import com.moemeido.game.entities.workers.Workshop;
 import com.moemeido.game.managers.MyGestureListener;
 import com.moemeido.game.managers.MyInputProcessor;
 import com.moemeido.game.screens.huds.HUD;
@@ -36,7 +32,7 @@ public class LoggingScreen extends AbstractScreen {
 
     private Array<LoggingTree> trees;
 
-    private Array<ActorLog> logs;
+    private Array<ActorLogLogging> logs;
 
     private Plot plot;
 
@@ -99,7 +95,7 @@ public class LoggingScreen extends AbstractScreen {
         Gdx.input.setInputProcessor(multiplexer);
 
         hud.initXPBar();
-        logs = new Array<ActorLog>();
+        logs = new Array<ActorLogLogging>();
     }
 
     public void addLoggingTree(){
@@ -130,7 +126,7 @@ public class LoggingScreen extends AbstractScreen {
         hud.update();
         app.gsm.globalUpdate(delta);
 
-        for(ActorLog log : logs) {
+        for(ActorLogLogging log : logs) {
             log.update(delta);
 
             if (log.isReadyToDestroy()) {
@@ -176,7 +172,7 @@ public class LoggingScreen extends AbstractScreen {
         int rollAmount = MathUtils.random(10, 30);
 
         for(int i = 0 ; i < rollAmount; i++) {
-            final ActorLog log = new ActorLog(app, dynamicStage, loggingTree.getCenter(), hud);
+            final ActorLogLogging log = new ActorLogLogging(app, dynamicStage, loggingTree.getCenter(), hud);
             logs.add(log);
 
             float moveToX = log.getPosition().x - loggingTree.getCenter().x;
@@ -231,7 +227,7 @@ public class LoggingScreen extends AbstractScreen {
 
     @Override
     public void hide() {
-        for (ActorLog log : logs) {
+        for (ActorLogLogging log : logs) {
             log.getImage().remove();
         }
 

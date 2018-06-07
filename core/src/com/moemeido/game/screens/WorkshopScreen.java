@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -34,10 +35,8 @@ public class WorkshopScreen extends AbstractScreen {
     private Array<ActorCoin> coins;
 
     private Stage dynamicStage;
-
     private Plot plot;
 
-    private GestureDetector gestureDetector;
     private MyGestureListener myGestureListener;
 
     public WorkshopScreen(Application app) {
@@ -90,7 +89,7 @@ public class WorkshopScreen extends AbstractScreen {
                 return true;
             }
         };
-        gestureDetector = new GestureDetector(myGestureListener);
+        GestureDetector gestureDetector = new GestureDetector(myGestureListener);
         gestureDetector.setLongPressSeconds(.2f);
         gestureDetector.setTapSquareSize(30f);
 
@@ -124,7 +123,7 @@ public class WorkshopScreen extends AbstractScreen {
         int rollAmount = MathUtils.random(10, 30);
 
         for(int i = 0 ; i < rollAmount; i++) {
-            final ActorCoin coin = new ActorCoin(app, dynamicStage, workshop.getCenter(), hud);
+            final ActorCoin coin = new ActorCoin(app, dynamicStage, hud.getCoinPosition(), workshop.getCenter(), hud);
             coins.add(coin);
 
             float moveToX = coin.getPosition().x - workshop.getCenter().x;
@@ -263,5 +262,9 @@ public class WorkshopScreen extends AbstractScreen {
         }
 
         return false;
+    }
+
+    public HUD getHUD(){
+        return hud;
     }
 }
