@@ -97,7 +97,7 @@ public class Workshop extends AbstractWorkingEntity  {
 
         // Collects logs from the player automatically if they have enough available
         if(!readyToCollect && !working && app.prefs.getInteger("playerLogs") >= intake) {
-            app.gsm.getPlayer().setLogCount(app.prefs.getInteger("playerLogs") - (int) intake);
+            app.gsm.getPlayer().setLogCount(app.prefs.getInteger("playerLogs") - intake);
             working = true;
         }
 

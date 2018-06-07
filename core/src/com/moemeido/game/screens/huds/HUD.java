@@ -25,18 +25,17 @@ import java.util.Locale;
 public class HUD {
 
     private Application app;
-    private Stage stage, dynamicStage;
-    private Player player;
+    private Stage dynamicStage;
 
     private Skin skin;
     private TextButton farmButton;
     private TextButton shopButton;
     private TextButton workerButton;
     private TextButton workshopButton;
+    private Color buttonSelectColor;
 
     private Table buttonTable;
     private Table topTable;
-    private Table xpTable;
 
     private Image uiLog;
     private Image uiCoin;
@@ -46,13 +45,6 @@ public class HUD {
     private Label goldLabel;
     private Label playerLevel, playerXP;
 
-    private float coinWorldX;
-    private float coinWorldY;
-
-    // The amount of xp the player has when first entering a screen
-    // Used to set proper values on the xp bar when entering different screens
-    private float shownXP;
-
     private boolean dynamicHUD;
 
     private Rectangle logBounds;
@@ -60,16 +52,12 @@ public class HUD {
 
     public HUD(Application app, Stage stage) {
         this.app = app;
-        this.stage = stage;
 
         TextureAtlas atlas = app.assets.get("img/sheet.pack", TextureAtlas.class);
         uiLog = new Image(atlas.findRegion("log1"));
         uiCoin = new Image(atlas.findRegion("coin2"));
 
         uiCoin.setSize(uiLog.getWidth(), uiLog.getHeight());
-
-        coinWorldX = uiCoin.getX();
-        coinWorldY = uiCoin.getY();
 
         skin = new Skin();
         skin.addRegions(app.assets.get("ui/uiskin.atlas", TextureAtlas.class));
@@ -92,7 +80,6 @@ public class HUD {
 
     public HUD(Application app, Stage stage, Stage dynamicStage) {
         this.app = app;
-        this.stage = stage;
         this.dynamicStage = dynamicStage;
 
         TextureAtlas atlas = app.assets.get("img/sheet.pack", TextureAtlas.class);
@@ -100,9 +87,6 @@ public class HUD {
         uiCoin = new Image(atlas.findRegion("coin2"));
 
         uiCoin.setSize(uiLog.getWidth(), uiLog.getHeight());
-
-        coinWorldX = uiCoin.getX();
-        coinWorldY = uiCoin.getY();
 
         skin = new Skin();
         skin.addRegions(app.assets.get("ui/uiskin.atlas", TextureAtlas.class));
@@ -140,31 +124,25 @@ public class HUD {
 
         // Change button color depending which button is selected
         if (app.gsm.getCurrentState() == GameScreenManager.STATE.WORKSHOP)
-            workshopButton.setColor(Color.FOREST);
+            workshopButton.setColor(buttonSelectColor);
 
         else if (app.gsm.getCurrentState() == GameScreenManager.STATE.LOGGING)
-            farmButton.setColor(Color.FOREST);
+            farmButton.setColor(buttonSelectColor);
 
         else if (app.gsm.getCurrentState() == GameScreenManager.STATE.WORKERS)
-            workerButton.setColor(Color.FOREST);
+            workerButton.setColor(buttonSelectColor);
 
         else if (app.gsm.getCurrentState() == GameScreenManager.STATE.SHOP)
-            shopButton.setColor(Color.FOREST);
+            shopButton.setColor(buttonSelectColor);
 
         //TODO remove this later when final shop is complete
         else if (app.gsm.getCurrentState() == GameScreenManager.STATE.SHOP2)
-            shopButton.setColor(Color.FOREST);
+            shopButton.setColor(buttonSelectColor);
 
         logLabel.setText(String.valueOf(NumberFormat.getInstance(Locale.getDefault()).format(app.prefs.getInteger("playerLogs"))));
         goldLabel.setText(String.valueOf(NumberFormat.getInstance(Locale.getDefault()).format(app.prefs.getInteger("playerGold"))));
         playerLevel.setText("Level: " + String.valueOf(NumberFormat.getInstance(Locale.getDefault()).format(app.prefs.getInteger("playerLevel"))));
         playerXP.setText("XP: " + String.valueOf(NumberFormat.getInstance(Locale.getDefault()).format(app.prefs.getInteger("playerXp"))));
-
-        // Will not display the top table when within the shop screen.
-        //if (app.gsm.getCurrentState() == GameScreenManager.STATE.SHOP || app.gsm.getCurrentState() == GameScreenManager.STATE.SHOP2)
-           // topTable.setVisible(false);
-        //else
-           // topTable.setVisible(true);
 
         // Resets the range of values on the xp bar if the player has gained or exceeded the amount of xp needed to obtain the next level
         if (xpBar.getValue() >= xpBar.getMaxValue() || xpBar.getValue() == 0){
@@ -176,6 +154,8 @@ public class HUD {
     }
 
     private void initButtons() {
+        buttonSelectColor = Color.FOREST;
+
         workshopButton = new TextButton("Workshop", skin);
         workshopButton.addListener(new ClickListener() {
 
@@ -247,7 +227,7 @@ public class HUD {
         playerLevel = new Label("", skin);
         topTable.add(playerLevel).padTop(5).padLeft(5).padRight(10).padBottom(5).right();
 
-        xpTable = new Table();
+        Table xpTable = new Table();
         playerXP = new Label("", skin);
         xpTable.add(playerXP).padRight(5);
         xpBar = new VisProgressBar(0, 0, 1, false);
@@ -265,7 +245,7 @@ public class HUD {
     /**
      * Converts from local to stage coordinates from within a table.
      * @param actor - the actor to return stage coordinates from.
-     * @return
+     * @return the parent coordinates of items within a table or other component
      */
     private Vector2 getStageCoordinates(Actor actor) {
         return actor.localToParentCoordinates(new Vector2(topTable.getX(), topTable.getY()));
@@ -289,7 +269,6 @@ public class HUD {
      */
     public void initXPBar() {
         xpBar.setRange(app.gsm.getPlayer().getPreviousExperience(), app.gsm.getPlayer().getExperienceNeeded());
-        shownXP = app.gsm.getPlayer().getExperience();
     }
 
     public Vector2 getLogPosition() {
