@@ -3,7 +3,6 @@ package com.moemeido.game.entities;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.moemeido.game.Application;
-import com.moemeido.game.managers.GameScreenManager;
 import com.moemeido.game.utils.LevelScaling;
 
 public class Item {
@@ -67,11 +66,26 @@ public class Item {
         }
 
         baseCost = itemCost;
-
-        growthModifier = 2.36f;
-
-        itemLevel = 1;
+        growthModifier = 1.85f;
         maxLevel = 10;
+
+        // only adds item to prefs if they have been upgraded
+        if (isInPrefs()){
+            updateExistingItem();
+            return;
+        }
+        else{
+            itemLevel = 1;
+        }
+    }
+
+    private void updateExistingItem(){
+        itemLevel = app.prefs.getInteger(getPrefsName() + "ItemLevel");
+        itemCost = app.prefs.getInteger(getPrefsName() + "ItemCost");
+    }
+
+    private boolean isInPrefs(){
+        return app.prefs.getString(getPrefsName()).equals(this.itemName);
     }
 
     public void updatePlayerStat(){
@@ -93,16 +107,29 @@ public class Item {
         itemCost = LevelScaling.calculateGrowth(baseCost, growthModifier, itemLevel);
         itemLevel++;
 
+        app.prefs.putString(getPrefsName(), itemName).flush();
+        app.prefs.putInteger(itemName.replaceAll("\\s+", "") + "ItemCost", itemCost).flush();
+        app.prefs.putInteger(itemName.replaceAll("\\s+", "") + "ItemLevel", itemLevel).flush();
+
         switch (id) {
             case HATCHET:
                 app.gsm.getPlayer().setStrength(app.gsm.getPlayer().getStrength() + 1);
                 break;
             case BOOTS:
-                app.gsm.getPlayer().setMovementSpeed(app.gsm.getPlayer().getMovementSpeed() + 1);
+                app.gsm.getPlayer().setMovementSpeed(app.gsm.getPlayer().getMovementSpeed() + 25);
                 break;
         }
 
         updatePlayerStat();
+    }
+
+    /**
+     * Returns the name of the item without spaces. This name is used within
+     * the preferences file to enabled persistence.
+     * @return the formatted name
+     */
+    private String getPrefsName(){
+        return itemName.replaceAll("\\s+", "");
     }
 
     public TextureRegion getItemTex() {

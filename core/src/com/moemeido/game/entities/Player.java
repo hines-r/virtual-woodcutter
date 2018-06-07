@@ -63,8 +63,16 @@ public class Player {
 
         powers = new HashMap<PowerUp.POWER, PowerUp>();
 
-        strength = 1f;
+        strength = app.prefs.getFloat("playerStrength");
+
+        if (strength <= 0) {
+            strength = 1f; // base amount of strength
+            app.prefs.putFloat("playerStrength", strength).flush(); // sets player prefs strength if it's the first initialization
+            System.out.println("Setting strength to: " + strength);
+        }
+
         currentStrength = strength;
+
         goldCount = app.prefs.getInteger("playerGold");
         logCount = app.prefs.getInteger("playerLogs");
 
@@ -253,6 +261,7 @@ public class Player {
     }
 
     public void setStrength(float strength) {
+        app.prefs.putFloat("playerStrength", strength).flush();
         this.strength = strength;
     }
 

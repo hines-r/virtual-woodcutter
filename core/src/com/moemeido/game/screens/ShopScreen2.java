@@ -120,6 +120,11 @@ public class ShopScreen2 extends AbstractScreen {
 
             // Starts at a minimum of 1 because items start at level 1
             final VisProgressBar levelBar = new VisProgressBar(0, items.get(i).getMaxLevel(), 1, false);
+
+            // If the item has already been upgraded, sets the value of the level bar
+            if (items.get(i).getItemLevel() > 1)
+                levelBar.setValue(items.get(i).getItemLevel() - 1);
+
             scrollableTable.add(levelBar).expandX().fillX().colspan(5).pad(5);
             scrollableTable.row();
 

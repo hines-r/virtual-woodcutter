@@ -138,7 +138,7 @@ public class PlayScreen extends AbstractScreen {
             if(player.isReadyToSwing()) {
                 player.setReadyToSwing(false);
                 player.setSwingTimer(0);
-                tree.setHitsToBreak(tree.getHitsToBreak() - player.getCurrentStrength());
+                tree.setHitsToBreak(tree.getHitsToBreak() - player.getStrength());
             }
 
             checkTree();
