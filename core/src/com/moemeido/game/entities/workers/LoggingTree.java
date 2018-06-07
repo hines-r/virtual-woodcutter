@@ -210,6 +210,8 @@ public class LoggingTree extends AbstractWorkingEntity {
 
         stateTime += Gdx.graphics.getDeltaTime();
 
+        app.fonts.font20.draw(batch, "Yield: " + currentYield + " logs", x, y - 50);
+
         if (readyToCollect) {
             batch.draw((TextureRegion)collectAnimation.getKeyFrame(stateTime, true),
                     x + width / 2 - ((TextureRegion)collectAnimation.getKeyFrame(stateTime)).getRegionWidth() * collectScale / 2,
