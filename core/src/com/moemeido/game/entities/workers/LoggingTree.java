@@ -28,7 +28,7 @@ import com.moemeido.game.utils.LevelScaling;
 import java.util.Locale;
 import java.util.Map;
 
-public class LoggingTree extends AbstractWorkingEntity implements IUpgradable {
+public class LoggingTree extends AbstractWorkingEntity {
 
     // Animation
     private Animation collectAnimation;

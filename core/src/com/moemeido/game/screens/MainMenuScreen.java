@@ -21,8 +21,6 @@ import com.moemeido.game.managers.MyInputProcessor;
 public class MainMenuScreen extends AbstractScreen {
 
     private Skin skin;
-
-    private TextButton playButton, quitButton;
     private GlyphLayout glyphLayout;
 
     private TextureRegion bg;
@@ -88,7 +86,6 @@ public class MainMenuScreen extends AbstractScreen {
 
     @Override
     public void dispose() {
-
         super.dispose();
     }
 
@@ -96,7 +93,7 @@ public class MainMenuScreen extends AbstractScreen {
         Table table = new Table();
         table.setFillParent(true);
 
-        playButton = new TextButton("Play", skin);
+        TextButton playButton = new TextButton("Play", skin);
         playButton.addListener(new ClickListener() {
             @Override
             public void clicked (InputEvent event, float x, float y) {
@@ -104,7 +101,7 @@ public class MainMenuScreen extends AbstractScreen {
             }
         });
 
-        quitButton = new TextButton("Quit", skin);
+        TextButton quitButton = new TextButton("Quit", skin);
         quitButton.addListener(new ClickListener() {
             @Override
             public void clicked (InputEvent event, float x, float y) {

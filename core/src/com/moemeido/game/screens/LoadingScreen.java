@@ -101,7 +101,6 @@ public class LoadingScreen extends AbstractScreen {
     @Override
     public void dispose() {
         super.dispose();
-
     }
 
 }

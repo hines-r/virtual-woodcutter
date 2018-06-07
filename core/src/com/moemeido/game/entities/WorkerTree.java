@@ -9,25 +9,20 @@ import com.moemeido.game.Application;
 
 public class WorkerTree {
 
-    private Application app;
-
     private float x, y;
-    private float width, height;
-
     private Sprite treeSprite;
 
     private Rectangle treeBounds;
 
     public WorkerTree(Application app, float x, float y){
-        this.app = app;
         this.x = x;
         this.y = y;
 
         TextureAtlas atlas = app.assets.get("img/sheet.pack", TextureAtlas.class);
         treeSprite = new Sprite(atlas.findRegion("smol_tree"));
 
-        width = treeSprite.getWidth();
-        height = treeSprite.getHeight();
+        float width = treeSprite.getWidth();
+        float height = treeSprite.getHeight();
 
         treeBounds = new Rectangle(x, y, width, height);
     }

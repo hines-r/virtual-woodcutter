@@ -15,7 +15,6 @@ import static com.moemeido.game.utils.B2DVars.PPM;
 
 public class PlayBackground {
 
-    private Application app;
     private AbstractScreen screen;
 
     private TextureRegion bg1;
@@ -34,7 +33,6 @@ public class PlayBackground {
     private float y2;
 
     public PlayBackground(Application app, AbstractScreen screen) {
-        this.app = app;
         this.screen = screen;
 
         TextureAtlas atlas = app.assets.get("img/sheet.pack", TextureAtlas.class);

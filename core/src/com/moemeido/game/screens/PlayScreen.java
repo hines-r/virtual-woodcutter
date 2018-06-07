@@ -28,33 +28,30 @@ import static com.moemeido.game.utils.B2DVars.*;
 public class PlayScreen extends AbstractScreen {
 
     private World world;
-    private Box2DDebugRenderer b2dr;
+    private HUD hud;
+    private Box2DDebugRenderer b2dr; // Used to render the bounds of game objects
     private Vector3 touch;
     private MyInputProcessor inputProcessor;
 
-    private HUD hud;
-
-    private Tree tree;
-    private Array<Log> logs; // Holds all active logs on the screen
-    private Pool<Log> logPool; // Keeps a pool of logs to be used again
-
-    private Array<PowerUp> powerUps; // Holds active power-ups for updating/rendering
-    private PowerUpSpawner spawner;
-
-    private Array<Body> bodies; // Holds all bodies added to the world
-
     private Player player;
-
+    private Tree tree;
+    private Body platform;
     private PlayBackground bg;
 
-    private Body platform;
+    private Array<Log> logs; // Holds all active logs on the screen
+    private Pool<Log> logPool; // Keeps a pool of logs to be used again
+    private Array<PowerUp> powerUps; // Holds active power-ups for updating/rendering
+    private Array<Body> bodies; // Holds all bodies added to the world
 
-    private Table powerTable;
-    private Label autoTimeLabel, mightTimeLabel, doubleTimeLabel;
+    private PowerUpSpawner powerSpawner;
 
+    // UI stuff
     private Table debugTable;
+    private Label autoTimeLabel, mightTimeLabel, doubleTimeLabel;
     private Label nextPowerLabel, xpRequiredLabel, strengthLabel;
     private Label treeHitsLabel, treeLifeLabel, logsDropLabel;
+
+    private boolean debug = false;
 
     public PlayScreen(final Application app) {
         super(app);
@@ -68,9 +65,9 @@ public class PlayScreen extends AbstractScreen {
         bg = new PlayBackground(app, this);
         hud = new HUD(app, stage);
         powerUps = new Array<PowerUp>();
-        spawner = new PowerUpSpawner(app, stage);
+        powerSpawner = new PowerUpSpawner(app, stage);
 
-        powerTable = new Table();
+        Table powerTable = new Table();
         powerTable.setFillParent(true);
         powerTable.setDebug(false);
 
@@ -166,7 +163,7 @@ public class PlayScreen extends AbstractScreen {
         world.step(1f / Application.APP_FPS, 6, 2);
         stage.act();
         updateDebugTable();
-        spawner.update(delta, powerUps);
+        powerSpawner.update(delta, powerUps);
         tree.update();
         player.update(delta, tree);
         hud.update();
@@ -208,11 +205,11 @@ public class PlayScreen extends AbstractScreen {
         app.batch.begin();
 
         bg.render(app.batch);
-
         tree.render(app.batch);
 
-        for (Log log : logs)
-            log.render(app.batch);
+        for (int i = 0; i < logs.size; i++) {
+            logs.get(i).render(app.batch);
+        }
 
         player.render(app.batch);
 
@@ -234,15 +231,20 @@ public class PlayScreen extends AbstractScreen {
             doubleTimeLabel.setText("");
         }
 
-        for (PowerUp p : powerUps)
-            p.render(app.batch);
+        for (int i = 0; i < powerUps.size; i++) {
+            powerUps.get(i).render(app.batch);
+        }
 
         app.batch.end();
 
-//        for (PowerUp p : powerUps)
-//            p.renderBounds();
+        if (debug) {
+            for (int i = 0; i < powerUps.size; i++) {
+                powerUps.get(i).renderBounds();
+            }
 
-        //b2dr.render(world, camera.combined.cpy().scl(PPM));
+            b2dr.render(world, camera.combined.cpy().scl(PPM));
+        }
+
         stage.draw();
     }
 
@@ -252,7 +254,7 @@ public class PlayScreen extends AbstractScreen {
         debugTable.setDebug(false);
 
         Label.LabelStyle labelStyle1 = new Label.LabelStyle(app.fonts.font20, Color.WHITE);
-        nextPowerLabel = new Label("Next power-up: " + spawner.getTimeToSpawn(), labelStyle1);
+        nextPowerLabel = new Label("Next power-up: " + powerSpawner.getTimeToSpawn(), labelStyle1);
         xpRequiredLabel = new Label("Next level: " + app.prefs.getInteger("playerXpNeeded") + "xp", labelStyle1);
         strengthLabel = new Label("Player strength: " + player.getCurrentStrength(), labelStyle1);
         logsDropLabel = new Label("Logs to drop: " + tree.getLogsToDrop(), labelStyle1);
@@ -285,7 +287,7 @@ public class PlayScreen extends AbstractScreen {
     }
 
     private void updateDebugTable() {
-        nextPowerLabel.setText("Next power-up: " + spawner.getTimeToSpawn());
+        nextPowerLabel.setText("Next power-up: " + powerSpawner.getTimeToSpawn());
         xpRequiredLabel.setText("Next level: " + player.getExperienceNeeded() + "xp");
         strengthLabel.setText("Player strength: " + player.getCurrentStrength());
         logsDropLabel.setText("Logs to drop: " + tree.getLogsToDrop());

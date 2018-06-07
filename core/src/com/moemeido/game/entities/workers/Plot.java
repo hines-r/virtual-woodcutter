@@ -138,12 +138,15 @@ public class Plot {
         float newX = bounds.x;
         float newY = 0f;
 
+        float logYOffset = 325f;
+        float workshopYOffset = 250f;
+
         switch (type) {
             case LOGGING:
-                newY = getCenter().y + 325;
+                newY = getCenter().y + logYOffset;
                 break;
             case WORKSHOP:
-                newY = getCenter().y + 250;
+                newY = getCenter().y + workshopYOffset;
                 break;
         }
 

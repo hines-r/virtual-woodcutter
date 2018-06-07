@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.moemeido.game.Application;
 import com.moemeido.game.utils.LevelScaling;
 
-public class Item {
+public class Item implements IUpgradable {
 
     private Application app;
 

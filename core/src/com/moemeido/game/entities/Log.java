@@ -81,7 +81,7 @@ public class Log implements Poolable {
         return position;
     }
 
-    public void jumpToTarget(Vector2 target, float jumptHeight) {
+    protected void jumpToTarget(Vector2 target, float jumpHeight) {
         float gravity = -9.81f;
 
         body.setTransform(createPositionOnTree(), 0);
@@ -90,8 +90,8 @@ public class Log implements Poolable {
         float displacementY = target.y - body.getPosition().y;
 
         Vector2 initialVelocity = new Vector2(
-                displacementX / ((float)(Math.sqrt((-2f * jumptHeight) / gravity) + Math.sqrt((2f * (displacementY - jumptHeight)) / gravity))),
-                (float) (Math.sqrt(-2f * gravity * jumptHeight)));
+                displacementX / ((float)(Math.sqrt((-2f * jumpHeight) / gravity) + Math.sqrt((2f * (displacementY - jumpHeight)) / gravity))),
+                (float) (Math.sqrt(-2f * gravity * jumpHeight)));
 
         body.applyLinearImpulse(initialVelocity.x, initialVelocity.y, body.getPosition().x, body.getPosition().y,true);
     }

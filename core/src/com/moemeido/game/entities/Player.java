@@ -82,8 +82,6 @@ public class Player {
             System.out.println("Setting speed to: " + movementSpeed);
         }
 
-        goldCount = app.prefs.getInteger("playerGold");
-        logCount = app.prefs.getInteger("playerLogs");
         level = app.prefs.getInteger("playerLevel");
         experience = app.prefs.getInteger("playerXp");
 
@@ -182,88 +180,30 @@ public class Player {
 
     }
 
-    public float getX() {
-        return x;
-    }
-
-    public boolean isMoving() {
-        return moving;
-    }
-
-
-    public boolean isAutoChopping() {
-        return autoChop;
-    }
-
-    public boolean isReadyToSwing() { return readyToSwing; }
-
-    public void setSwingTimer(float swingTimer) {
-        this.swingTimer = swingTimer;
-    }
-
-    public void setReadyToSwing(boolean readyToSwing) { this.readyToSwing = readyToSwing; }
-
+    // Player prefs setters
     public void setLogCount(int logCount) {
-        //this.logCount = logCount;
         app.prefs.putInteger("playerLogs", logCount);
         app.prefs.flush();
     }
 
-    public float getCurrentStrength() {
-        return currentStrength;
-    }
-
-    public void setChopping(boolean chopping) { isChopping = chopping; }
-
-    public int getGoldCount() {
-        return app.prefs.getInteger("playerGold");
-    }
-
-    public void buyItem(int itemCost) {
-        goldCount -= itemCost;
-    }
-
     public void setGoldCount(int goldCount) {
-        //this.goldCount = goldCount;
         app.prefs.putInteger("playerGold", goldCount);
         app.prefs.flush();
     }
 
-    public HashMap<PowerUp.POWER, PowerUp> getPowers() {
-        return powers;
-    }
-
-    public int getExperience() {
-        return experience;
-    }
-
-    public void setExperience(int experience) {
-        //this.experience = experience;
-        app.prefs.putInteger("playerXp", experience);
+    public void setLevel(int level) {
+        app.prefs.putInteger("playerLevel", level);
         app.prefs.flush();
     }
 
-    public int getLevel() {
-        return level;
-    }
-
-    public void setLevel(int level) {
-        //this.level = level;
-        app.prefs.putInteger("playerLevel", level);
+    public void setExperience(int experience) {
+        app.prefs.putInteger("playerXp", experience);
         app.prefs.flush();
     }
 
     public void setExperienceNeeded(int experienceNeeded){
         app.prefs.putInteger("playerXpNeeded", experienceNeeded);
         app.prefs.flush();
-    }
-
-    public int getExperienceNeeded() {
-        return experienceNeeded;
-    }
-
-    public int getPreviousExperience() {
-        return previousExperience;
     }
 
     public void setStrength(float strength) {
@@ -278,11 +218,47 @@ public class Player {
         this.movementSpeed = movementSpeed;
     }
 
+    // Player prefs getters
+    public int getGoldCount() {
+        return app.prefs.getInteger("playerGold");
+    }
+    public float getStrength() {
+        return strength;
+    }
+    public float getCurrentStrength() {
+        return currentStrength;
+    }
+    public int getLevel() {
+        return level;
+    }
+    public int getExperienceNeeded() {
+        return experienceNeeded;
+    }
+    public int getPreviousExperience() {
+        return previousExperience;
+    }
     public float getMovementSpeed() {
         return movementSpeed;
     }
 
-    public float getStrength() {
-        return strength;
+    // Other getters
+    public float getX() {
+        return x;
     }
+    public boolean isMoving() {
+        return moving;
+    }
+    public boolean isAutoChopping() {
+        return autoChop;
+    }
+    public boolean isReadyToSwing() { return readyToSwing; }
+    public void setSwingTimer(float swingTimer) {
+        this.swingTimer = swingTimer;
+    }
+    public void setReadyToSwing(boolean readyToSwing) { this.readyToSwing = readyToSwing; }
+    public void setChopping(boolean chopping) { isChopping = chopping; }
+    public HashMap<PowerUp.POWER, PowerUp> getPowers() {
+        return powers;
+    }
+
 }

@@ -21,9 +21,6 @@ public class PowerUp {
     private Application app;
     private Stage stage;
 
-    private float x;
-    private float y;
-
     private Rectangle bounds;
 
     private boolean isActive;
@@ -40,7 +37,6 @@ public class PowerUp {
     private Animation birdFlyAwayAnimation;
     private boolean offScreen;
 
-    private float birdScale;
     private float birdSpeed;
     private float elapsedTime;
     private float animationWidth, animationHeight;
@@ -56,34 +52,34 @@ public class PowerUp {
     public PowerUp(Application app, Stage stage, float x, float y, POWER powerType) {
         this.app = app;
         this.stage = stage;
-        this.x = x;
-        this.y = y;
         this.powerType = powerType;
 
         TextureAtlas atlas = app.assets.get("img/sheet.pack", TextureAtlas.class);
 
+        float frameDuration = 0.4f; // The speed of the animation
+
         switch (powerType) {
             case FULL_AUTO:
                 powerImg = new Image(atlas.findRegion("axe_speed"));
-                birdAnimation = new Animation<TextureRegion>(.4f, atlas.findRegions("bird_auto"), Animation.PlayMode.LOOP);
+                birdAnimation = new Animation<TextureRegion>(frameDuration, atlas.findRegions("bird_auto"), Animation.PlayMode.LOOP);
                 break;
             case MIGHT:
                 powerImg = new Image(atlas.findRegion("might"));
-                birdAnimation = new Animation<TextureRegion>(.4f, atlas.findRegions("bird_might"), Animation.PlayMode.LOOP);
+                birdAnimation = new Animation<TextureRegion>(frameDuration, atlas.findRegions("bird_might"), Animation.PlayMode.LOOP);
                 break;
             case DOUBLE_LOG:
                 powerImg = new Image(atlas.findRegion("double_log"));
-                birdAnimation = new Animation<TextureRegion>(.4f, atlas.findRegions("bird_double_log"), Animation.PlayMode.LOOP);
+                birdAnimation = new Animation<TextureRegion>(frameDuration, atlas.findRegions("bird_double_log"), Animation.PlayMode.LOOP);
                 break;
         }
 
-        birdFlyAwayAnimation = new Animation<TextureRegion>(.4f, atlas.findRegions("bird"), Animation.PlayMode.LOOP);
+        birdFlyAwayAnimation = new Animation<TextureRegion>(frameDuration, atlas.findRegions("bird"), Animation.PlayMode.LOOP);
 
-        birdScale = 2f;
         elapsedTime = 0f;
         birdSpeed = 110f;
         flyRight = true;
 
+        float birdScale = 2f;
         animationWidth = atlas.findRegion("bird_auto").getRegionWidth() * birdScale;
         animationHeight = atlas.findRegion("bird_auto").getRegionHeight() * birdScale;
 
@@ -133,7 +129,6 @@ public class PowerUp {
                 bounds.x -= app.gsm.getPlayer().getMovementSpeed() * delta;
             }
         }
-
     }
 
     public void render(SpriteBatch batch) {

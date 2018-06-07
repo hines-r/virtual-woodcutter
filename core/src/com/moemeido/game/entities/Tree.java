@@ -20,7 +20,6 @@ public class Tree {
 
     private float treeWidth;
     private float treeHeight;
-    private float treeScale;
 
     private float hitsToBreak;
     private float totalHits;
@@ -66,7 +65,7 @@ public class Tree {
 
         totalHits = hitsToBreak;
 
-        treeScale = 6f;
+        float treeScale = 6f;
         treeWidth = (float)treeTex.getRegionWidth() * treeScale;
         treeHeight = (float)treeTex.getRegionHeight() * treeScale;
 
