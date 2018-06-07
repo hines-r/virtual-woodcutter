@@ -19,15 +19,12 @@ import static com.moemeido.game.utils.B2DVars.PPM;
 
 public class Log implements Poolable {
 
-    private Application app;
-
     private Body body;
     private World world;
 
     private TextureRegion logTex;
     private Tree tree;
 
-    private float logScale;
     private float logWidth;
     private float logHeight;
     private Vector2 position;
@@ -39,7 +36,6 @@ public class Log implements Poolable {
     private boolean readyToDestroy;
 
     public Log(Application app, World world, Tree tree) {
-        this.app = app;
         this.world = world;
         this.tree = tree;
 
@@ -48,14 +44,14 @@ public class Log implements Poolable {
 
         int minYield = 1;
         int maxYield = 10;
-        logYield = MathUtils.random(minYield,maxYield);
+        logYield = MathUtils.random(minYield, maxYield);
 
         life = 3.25f; // How long logs remain on the screen
         currentLife = life;
 
-        logScale = 2f;
+        float logScale = 2f;
         logWidth = logTex.getRegionWidth() * logScale - logTex.getRegionWidth() / 2;
-        logHeight = logTex.getRegionHeight() * logScale- logTex.getRegionHeight() / 2;
+        logHeight = logTex.getRegionHeight() * logScale - logTex.getRegionHeight() / 2;
 
         createPositionOnTree();
         defineLog();
@@ -121,10 +117,6 @@ public class Log implements Poolable {
         currentLife = life;
         readyToDestroy = false;
         body.setAwake(false);
-    }
-
-    public void dispose() {
-
     }
 
     public boolean isReadyToDestroy() {

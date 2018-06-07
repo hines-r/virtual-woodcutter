@@ -15,10 +15,9 @@ public class ActorLogLogging extends AbstractActor {
     private HUD hud;
     private float speed;
 
-    public ActorLogLogging(Application app, Stage stage, Vector2 target, HUD hud) {
-        super(app, stage, target);
+    public ActorLogLogging(Application app, Stage stage, Vector2 target, Vector2 origin, HUD hud) {
+        super(app, stage, target, origin);
         this.hud = hud;
-        this.target = hud.getLogPosition();
 
         TextureAtlas atlas = app.assets.get("img/sheet.pack", TextureAtlas.class);
         img = new Image(atlas.findRegion("log1"));
@@ -38,8 +37,7 @@ public class ActorLogLogging extends AbstractActor {
     }
 
     public void update(float delta) {
-        target.x = hud.getLogPosition().x;
-        target.y = hud.getLogPosition().y;
+        target = hud.getLogPosition();
         bounds.setPosition(img.getX() + img.getWidth() / 4, img.getY() + img.getHeight() / 4);
 
         if (hud.getLogBounds().contains(bounds.x, bounds.y))

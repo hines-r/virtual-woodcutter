@@ -38,10 +38,10 @@ public class LogSpawner {
             log.update(delta);
 
         if (logTime >= logsPerSecond && shop.isWorking() && !shop.isReadyToCollect()) {
-
-            Vector2 origin = new Vector2(shop.getPosition().x - 75, shop.getPosition().y + 70);
             Vector2 target = new Vector2(shop.getPosition().x + shop.getWidth() + 50, shop.getPosition().y + 70);
-            logs.add(new ActorLogWorkshop(app, stage, origin, target));
+            Vector2 origin = new Vector2(shop.getPosition().x - 75, shop.getPosition().y + 70);
+
+            logs.add(new ActorLogWorkshop(app, stage, target, origin));
             logs.peek().linearMovement();
             logTime = 0f;
         }

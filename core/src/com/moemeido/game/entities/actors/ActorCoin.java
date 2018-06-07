@@ -19,8 +19,7 @@ public class ActorCoin extends AbstractActor {
     private float speed;
 
     public ActorCoin(Application app, Stage stage, Vector2 target, Vector2 origin, HUD hud) {
-        super(app, stage, target);
-        this.origin = origin;
+        super(app, stage, target, origin);
         this.hud = hud;
 
         TextureAtlas atlas = app.assets.get("img/sheet.pack", TextureAtlas.class);
@@ -37,6 +36,7 @@ public class ActorCoin extends AbstractActor {
     }
 
     public void update(float delta) {
+        target = hud.getCoinPosition();
         bounds.setPosition(img.getX() + img.getWidth() / 4, img.getY() + img.getHeight() / 4);
 
         if (hud.getCoinBounds().contains(bounds.x, bounds.y))

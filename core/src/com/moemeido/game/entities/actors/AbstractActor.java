@@ -26,10 +26,11 @@ public abstract class AbstractActor implements Pool.Poolable {
 
     Rectangle bounds;
 
-    AbstractActor(Application app, Stage stage, Vector2 target) {
+    AbstractActor(Application app, Stage stage, Vector2 target, Vector2 origin) {
         this.app = app;
         this.stage = stage;
         this.target = target;
+        this.origin = origin;
     }
 
     public abstract void update(float delta);

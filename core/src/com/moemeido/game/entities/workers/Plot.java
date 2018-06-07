@@ -1,5 +1,6 @@
 package com.moemeido.game.entities.workers;
 
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Interpolation;
@@ -30,46 +31,44 @@ import com.moemeido.game.utils.UITools;
 public class Plot {
 
     private Application app;
-    private AbstractScreen screen;
     private Stage stage, dynamicStage;
+    private Screen screen;
 
+    private float width = 425;
+    private float height = 200;
     private float x, y;
-    private float width, height;
 
     private Rectangle bounds;
 
-    private VisTable table, stageTable;
+    // UI stuff
+    private VisTable table;
     private VisTextButton buyButton;
-    private VisWindow dialogWindow;
-
-    private Vector2 initialDialogPosition;
-
-    private int cost;
-
     private PlotType type;
-
     private UITools uiTools;
+
+    private int cost = 100;
 
     public enum PlotType {
         WORKSHOP,
         LOGGING
     }
 
-    public Plot(final Application app, final AbstractScreen screen, final Stage stage, Stage dynamicStage, float x, float y, final PlotType type) {
+    public Plot(final Application app, AbstractScreen screen, Stage stage, Stage dynamicStage, float x, float y, PlotType type) {
         this.app = app;
-        this.stage = stage;
         this.screen = screen;
+        this.stage = stage;
         this.dynamicStage = dynamicStage;
         this.x = x;
         this.y = y;
         this.type = type;
 
-        width = 425;
-        height = 200;
+        initPlotUI();
 
         bounds = new Rectangle(x - width / 2, y - height / 2, width, height);
+    }
 
-        cost = 100;
+    private void initPlotUI(){
+        uiTools = new UITools(app, stage);
 
         table = new VisTable();
         table.setPosition(x, y);
@@ -104,50 +103,11 @@ public class Plot {
         table.add(buyButton).width(150).height(50);
 
         dynamicStage.addActor(table);
-
-        uiTools = new UITools(app, stage);
     }
 
     public void incrementCost(){
-        cost *= 2;
-    }
-
-    private void setupDialog(){
-        stageTable = new VisTable();
-        stageTable.setFillParent(true);
-
-        Window.WindowStyle windowStyle = new Window.WindowStyle(app.fonts.font30, Color.WHITE, VisUI.getSkin().getDrawable("window"));
-        dialogWindow = new VisWindow("", windowStyle);
-        dialogWindow.setVisible(false);
-        dialogWindow.setMovable(false);
-        dialogWindow.setTouchable(Touchable.disabled);
-
-        Label.LabelStyle labelStyle1 = new Label.LabelStyle(app.fonts.font30, Color.WHITE);
-        VisLabel dialogLabel = new VisLabel("Not enough gold!", labelStyle1);
-        dialogLabel.setAlignment(Align.center);
-
-        dialogWindow.add(dialogLabel).padBottom(25).center();
-        stageTable.top();
-        stageTable.add(dialogWindow).width(Application.V_WIDTH);
-        stage.addActor(stageTable);
-    }
-
-    private void displayDialogWindow() {
-        dialogWindow.getActions().clear();
-
-        dialogWindow.setPosition(0, 800);
-
-        dialogWindow.addAction(Actions.parallel(
-                Actions.show(),
-                Actions.alpha(0),
-                Actions.alpha(.9f, .25f, Interpolation.pow5),
-                Actions.sequence(
-                        Actions.moveBy(0, 75),
-                        Actions.moveBy(0, -75, .25f, Interpolation.pow5),
-                        Actions.delay(1f),
-                        Actions.fadeOut(1f, Interpolation.pow5)
-                )
-        ));
+        float incrementMultiplier = 2f;
+        cost *= incrementMultiplier;
     }
 
     public void update() {

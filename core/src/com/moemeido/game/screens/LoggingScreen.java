@@ -24,22 +24,15 @@ import com.moemeido.game.screens.huds.HUD;
 public class LoggingScreen extends AbstractScreen {
 
     private Vector3 touch;
-
     private Stage dynamicStage;
-
     private HUD hud;
-    private TextureRegion bg1, bg2;
 
-    private Array<LoggingTree> trees;
-
-    private Array<ActorLogLogging> logs;
+    private MyGestureListener myGestureListener;
 
     private Plot plot;
-
-    private Array<Boolean> visibleWindows;
-
-    private GestureDetector gestureDetector;
-    private MyGestureListener myGestureListener;
+    private TextureRegion bg1, bg2;
+    private Array<LoggingTree> trees;
+    private Array<ActorLogLogging> logs;
 
     public LoggingScreen(Application app) {
         super(app);
@@ -83,7 +76,7 @@ public class LoggingScreen extends AbstractScreen {
                 return false;
             }
         };
-        gestureDetector = new GestureDetector(myGestureListener);
+        GestureDetector gestureDetector = new GestureDetector(myGestureListener);
         gestureDetector.setLongPressSeconds(.2f);
         gestureDetector.setTapSquareSize(30f);
 
@@ -172,7 +165,7 @@ public class LoggingScreen extends AbstractScreen {
         int rollAmount = MathUtils.random(10, 30);
 
         for(int i = 0 ; i < rollAmount; i++) {
-            final ActorLogLogging log = new ActorLogLogging(app, dynamicStage, loggingTree.getCenter(), hud);
+            final ActorLogLogging log = new ActorLogLogging(app, dynamicStage, hud.getLogPosition(), loggingTree.getCenter(), hud);
             logs.add(log);
 
             float moveToX = log.getPosition().x - loggingTree.getCenter().x;

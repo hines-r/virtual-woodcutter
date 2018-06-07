@@ -17,10 +17,8 @@ public class ActorLogWorkshop extends AbstractActor {
     private Image goldCoin;
     private float timeToTarget;
 
-    public ActorLogWorkshop(Application app, Stage stage, Vector2 origin, Vector2 target) {
-        super(app, stage, target);
-        this.origin = origin;
-        this.target = target;
+    public ActorLogWorkshop(Application app, Stage stage, Vector2 target, Vector2 origin) {
+        super(app, stage, target, origin);
 
         TextureAtlas atlas = app.assets.get("img/sheet.pack", TextureAtlas.class);
         img = new Image(atlas.findRegion("log1"));
