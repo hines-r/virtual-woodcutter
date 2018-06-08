@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.kotcrab.vis.ui.widget.VisProgressBar;
 import com.moemeido.game.Application;
 import com.moemeido.game.utils.LevelScaling;
 
@@ -26,6 +27,9 @@ public class Worker implements IUpgradable {
     private float stateTime;
 
     private int level;
+    private int boostLevel;
+    private int baseBoostLevel;
+    private int timesBoosted;
     private int logAmount;
     private float movementSpeed;
     private int upgradeCost;
@@ -65,6 +69,8 @@ public class Worker implements IUpgradable {
         workerWalk.setPosition(MathUtils.random(10, 100), MathUtils.random(100, 900));
 
         level = 1;
+        boostLevel = 5;
+        baseBoostLevel = boostLevel;
         logAmount = 10;
         movementSpeed = 5f;
         totalGatherTime = 3f;
@@ -199,16 +205,30 @@ public class Worker implements IUpgradable {
     }
 
     public void upgrade() {
-        level++;
         logAmount += LevelScaling.computeUpgradeYields(level, 10, 0.5f);
 
-        if(movementSpeed + .1f < movementCap)
+        if(movementSpeed + .1f <= movementCap)
             movementSpeed += .1f;
 
-        if(totalGatherTime - .1f < gatherTimeCap)
-            totalGatherTime -= .1f;
-
         upgradeCost += LevelScaling.computeUpgradeYields(level, 10, 0.25f);
+    }
+
+    public void updateLevel(VisProgressBar levelBar) {
+        if (level == 1) {
+            levelBar.setRange(level, boostLevel);
+        }
+
+        level++;
+
+        if (level >= boostLevel) {
+            timesBoosted++;
+            boostLevel += baseBoostLevel + (5 * timesBoosted);
+
+            if(totalGatherTime - .25f >= gatherTimeCap)
+                totalGatherTime -= .25f;
+
+            levelBar.setRange(level, boostLevel);
+        }
     }
 
     public void incrementPurchaseCost() {
@@ -222,6 +242,7 @@ public class Worker implements IUpgradable {
     public int getLevel() {
         return level;
     }
+
 
     public int getLogAmount() {
         return logAmount;

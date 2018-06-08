@@ -349,6 +349,7 @@ public class WorkerScreen extends AbstractScreen {
         if (workers.size == unlockGrid.size) {
             windowUpgradeButton.setText("Upgrade\n" + String.valueOf(workers.first().getUpgradeCost()) + "g");
             levelBar.setValue(workers.first().getLevel());
+
         } else {
             windowUpgradeButton.setText("Buy Worker\n" + String.valueOf(workers.first().getPurchaseCost()) + "g");
         }
@@ -365,6 +366,7 @@ public class WorkerScreen extends AbstractScreen {
         if (workers.size > 0) {
             for (int i = 0; i < workers.size; i++) {
                 Worker worker = workers.get(i);
+                worker.updateLevel(levelBar);
                 worker.upgrade();
             }
         }
@@ -394,6 +396,7 @@ public class WorkerScreen extends AbstractScreen {
         for (int i = 0; i < arraySize; i++) {
             addWorker();
             for (int j = 1; j < arrayLevel; j++) {
+                workers.get(i).updateLevel(levelBar);
                 workers.get(i).upgrade();
             }
         }
