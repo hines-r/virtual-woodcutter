@@ -124,7 +124,7 @@ public class Item implements IUpgradable {
                 app.gsm.getPlayer().setStrength(app.gsm.getPlayer().getStrength() + 1f);
                 break;
             case BOOTS:
-                app.gsm.getPlayer().setMovementSpeed(app.gsm.getPlayer().getMovementSpeed() + 10f);
+                app.gsm.getPlayer().setMovementSpeed(app.gsm.getPlayer().getMovementSpeed() + 15f);
                 break;
             case GOLD_MODIFIER:
                 app.gsm.getPlayer().setGoldModifier(app.gsm.getPlayer().getGoldModifier() + .1f);
