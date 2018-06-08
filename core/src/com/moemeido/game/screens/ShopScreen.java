@@ -7,7 +7,9 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
@@ -17,6 +19,7 @@ import com.kotcrab.vis.ui.widget.*;
 import com.moemeido.game.Application;
 import com.moemeido.game.entities.Item;
 import com.moemeido.game.managers.MyInputProcessor;
+import com.moemeido.game.utils.UITools;
 
 public class ShopScreen extends AbstractScreen {
 
@@ -24,146 +27,24 @@ public class ShopScreen extends AbstractScreen {
     private TextureRegion bg;
     private GlyphLayout glyphLayout;
 
-    private Skin skin;
-    private VisTable mainTable;
-    private VisScrollPane scrollPane;
-    private List list;
-    private Array<Label> labels;
-    private Array<TextButton> buttons;
+    private UITools uiTools;
 
-    private VisTable textTable;
-    private Image uiLog, uiCoin;
-    private VisLabel logLabel, goldLabel;
+    private Array<Item> items;
+    private Array<VisLabel> currentBonusLabels;
 
-    public ShopScreen(Application app) {
+    public ShopScreen(Application app)
+    {
         super(app);
         hud = new HUD(app, stage);
         glyphLayout = new GlyphLayout();
         TextureAtlas atlas = app.assets.get("img/sheet.pack", TextureAtlas.class);
         bg = atlas.findRegion("plank_bg2");
 
-        skin = new Skin();
-        skin.addRegions(app.assets.get("ui/uiskin.atlas", TextureAtlas.class));
-        skin.add("default-font", app.fonts.font30);
-        skin.load(Gdx.files.internal("ui/uiskin.json"));
-
-        mainTable = new VisTable();
-        mainTable.setFillParent(true);
-        mainTable.setDebug(false);
-        stage.addActor(mainTable);
-
-        VisTextButton.VisTextButtonStyle buttonStyle1 = new VisTextButton.VisTextButtonStyle(
-                VisUI.getSkin().getDrawable("button"),
-                VisUI.getSkin().getDrawable("button-down"),
-                VisUI.getSkin().getDrawable("button"),
-                app.fonts.font30);
-
-        Label.LabelStyle labelStyle1 = new Label.LabelStyle(app.fonts.font20, Color.WHITE);
-
-        labels = new Array<Label>();
-        buttons = new Array<TextButton>();
-        for(int i = 0; i < 10; i++) {
-            labels.add(new VisLabel(String.valueOf(i), labelStyle1));
-            buttons.add(new VisTextButton("Testing " + i, buttonStyle1));
-        }
-
-        list = new List(skin);
-        list.setItems(labels);
+        items = new Array<Item>();
+        currentBonusLabels = new Array<VisLabel>();
 
         setupScrollPane();
-
-        textTable = new VisTable();
-        textTable.setFillParent(true);
-        textTable.setDebug(false);
-        stage.addActor(textTable);
-
-        textTable.bottom();
-
-        uiCoin = new Image(atlas.findRegion("coin2"));
-        uiCoin.setScaling(Scaling.fit);
-        textTable.add(uiCoin).padBottom(210).size(30);
-        goldLabel = new VisLabel("0", labelStyle1);
-        goldLabel.setAlignment(Align.left);
-        textTable.add(goldLabel).align(Align.left).padBottom(210).padLeft(10);
-    }
-
-    private void setupScrollPane() {
-        final VisTextButton.VisTextButtonStyle buttonStyle1 = new VisTextButton.VisTextButtonStyle(
-                VisUI.getSkin().getDrawable("button"),
-                VisUI.getSkin().getDrawable("button-down"),
-                VisUI.getSkin().getDrawable("button"),
-                app.fonts.font30);
-
-        Label.LabelStyle labelStyle1 = new Label.LabelStyle(app.fonts.font20, Color.WHITE);
-
-        skin.get(List.ListStyle.class).selection.setBottomHeight(50);
-        skin.get(List.ListStyle.class).selection.setTopHeight(50);
-
-        VisTable scrollableTable = new VisTable();
-        scrollableTable.setDebug(false);
-
-        final Array<Item> items = new Array<Item>();
-        //items.add(new Item(app, Item.ItemID.HATCHET));
-        //items.add(new Item(app, Item.ItemID.BOOTS));
-
-        for(int i = 0; i < items.size; i ++) {
-            Image img = new Image(items.get(i).getItemTex());
-            img.setScaling(Scaling.fit);
-            scrollableTable.add(img).expandX().padTop(10).padBottom(10).size(100);
-
-            final Label itemNameLabel = new Label(items.get(i).getItemName()+ " " + items.get(i).getItemLevel(), labelStyle1);
-            itemNameLabel.setAlignment(Align.center);
-            scrollableTable.add(itemNameLabel).expandX().center().padTop(10).padBottom(10);
-
-            final VisTextButton upgradeButton = new VisTextButton(items.get(i).getItemCost() + "g\nUpgrade", buttonStyle1);
-            final int finalI = i;
-
-            upgradeButton.addListener(new ClickListener(){
-                @Override
-                public void clicked (InputEvent event, float x, float y) {
-                    final VisDialog dialog = new VisDialog("");
-
-                    final Label dialogLabel = new Label("Would you like to upgrade this item\n" +
-                            "to level " + (items.get(finalI).getItemLevel() + 1) + " for " + items.get(finalI).getItemCost() + "g?", skin);
-                    dialogLabel.setAlignment(Align.center);
-                    dialog.getContentTable().add(dialogLabel).pad(50);
-
-                    VisTextButton yes = new VisTextButton("Yes!", buttonStyle1);
-                    yes.addListener( new ClickListener(){
-                        @Override
-                        public void clicked (InputEvent event, float x, float y) {
-                            if (app.gsm.getPlayer().getGoldCount() >= items.get(finalI).getItemCost()) {
-                                items.get(finalI).upgrade();
-                                upgradeButton.setText(items.get(finalI).getItemCost() + "g\nUpgrade");
-                                dialog.hide();
-                                itemNameLabel.setText(items.get(finalI).getItemName() + " " + items.get(finalI).getItemLevel());
-                            } else {
-                                dialogLabel.setText("Not enough gold!");
-                            }
-                        }
-                    });
-                    dialog.getButtonsTable().add(yes).width(150).height(55).pad(10);
-
-                    VisTextButton no = new VisTextButton("No!", buttonStyle1);
-                    no.addListener( new ClickListener(){
-                        @Override
-                        public void clicked (InputEvent event, float x, float y) {
-                            dialog.hide();
-                        }
-                    });
-                    dialog.getButtonsTable().add(no).width(150).height(55).pad(10);
-
-                    dialog.show(stage);
-                }
-            });
-            scrollableTable.add(upgradeButton).expandX().padTop(10).padBottom(10).width(125);
-
-            scrollableTable.row();
-        }
-
-        scrollPane = new VisScrollPane(scrollableTable);
-        scrollPane.setupFadeScrollBars(0f, 0f);
-        mainTable.add(scrollPane).expand().fill().center().padTop(75).padBottom(275).width(500);
+        uiTools = new UITools(app, stage);
     }
 
     @Override
@@ -173,12 +54,121 @@ public class ShopScreen extends AbstractScreen {
         multiplexer.addProcessor(new MyInputProcessor(app));
         Gdx.input.setInputProcessor(multiplexer);
 
-        stage.addActor(mainTable);
-
         app.batch.setProjectionMatrix(camera.combined);
         app.shapeRenderer.setProjectionMatrix(camera.combined);
 
         hud.initXPBar();
+
+        updateCurrentStats();
+    }
+
+    private void setupScrollPane() {
+        VisTable stageTable = new VisTable();
+        stageTable.setFillParent(true);
+        stageTable.setDebug(false);
+
+        items = new Array<Item>();
+
+        // For each item defined within the Item class, place within the scrollable table
+        for (int i = 0; i < Item.ItemID.values().length; i++){
+            items.add(new Item(app, Item.ItemID.values()[i]));
+        }
+
+        VisTable scrollableTable = new VisTable();
+        scrollableTable.setDebug(false);
+
+        Window.WindowStyle windowStyle1 = new Window.WindowStyle(app.fonts.font20, Color.WHITE, VisUI.getSkin().getDrawable("window"));
+
+        Label.LabelStyle labelStyle1 = new Label.LabelStyle(app.fonts.font30, Color.WHITE);
+        Label.LabelStyle labelStyle2 = new Label.LabelStyle(app.fonts.font20, Color.WHITE);
+
+        VisTextButton.VisTextButtonStyle buttonStyle1 = new VisTextButton.VisTextButtonStyle(
+                VisUI.getSkin().getDrawable("button"),
+                VisUI.getSkin().getDrawable("button-down"),
+                VisUI.getSkin().getDrawable("button"),
+                app.fonts.font30);
+
+        for (int i = 0; i < items.size; i++) {
+            Image img = new Image(items.get(i).getItemTex());
+            img.setScaling(Scaling.fit);
+            scrollableTable.add(img).size(100).left();
+            scrollableTable.addSeparator(true).pad(5);
+
+            VisTable textTable = new VisTable();
+            textTable.setDebug(false);
+
+            VisLabel itemNameLabel = new VisLabel(items.get(i).getItemName(), labelStyle1);
+            textTable.add(itemNameLabel).expandX().left();
+            textTable.row();
+
+            VisLabel descriptionLabel = new VisLabel("\nThis is a test.\nThis is a new line.", labelStyle2);
+            descriptionLabel.setText(items.get(i).getDescription());
+            textTable.add(descriptionLabel).expandX().left();
+            textTable.row();
+
+            final VisLabel currentBonusLabel = new VisLabel(items.get(i).getCurrentStat(), labelStyle2);
+            currentBonusLabels.add(currentBonusLabel);
+            textTable.add(currentBonusLabel).expand().bottom().left();
+            textTable.row();
+
+            scrollableTable.add(textTable).expandX().fill().pad(5);
+
+            final VisTextButton upgradeButton = new VisTextButton("Upgrade!\n" + items.get(i).getItemCost() + "g", buttonStyle1);
+            scrollableTable.add(upgradeButton).right().pad(5).width(100).height(75);
+            scrollableTable.row();
+
+            // Starts at a minimum of 1 because items start at level 1
+            final VisProgressBar levelBar = new VisProgressBar(0, items.get(i).getMaxLevel(), 1, false);
+
+            if (items.get(i).getItemLevel() == items.get(i).getMaxLevel()){
+                levelBar.setValue(items.get(i).getItemLevel() + 1);
+                upgradeButton.setDisabled(true);
+                upgradeButton.setText("Max\nLevel!");
+            }
+            else{
+                levelBar.setValue(items.get(i).getItemLevel());
+            }
+
+            scrollableTable.add(levelBar).expandX().fillX().colspan(5).pad(5);
+            scrollableTable.row();
+
+            final int finalI = i;
+            upgradeButton.addListener(new ClickListener(){
+                @Override
+                public void clicked (InputEvent event, float x, float y) {
+                    if (items.get(finalI).getItemLevel() == items.get(finalI).getMaxLevel())
+                        return;
+
+                    if (items.get(finalI).getItemLevel() < items.get(finalI).getMaxLevel()) {
+                        if (app.gsm.getPlayer().getGoldCount() >= items.get(finalI).getItemCost()) {
+                            app.gsm.getPlayer().setGoldCount(app.gsm.getPlayer().getGoldCount() - items.get(finalI).getItemCost());
+                            items.get(finalI).upgrade();
+                            currentBonusLabel.setText(items.get(finalI).getCurrentStat());
+                            upgradeButton.setText("Upgrade!\n" + items.get(finalI).getItemCost() + "g");
+                            levelBar.setValue(items.get(finalI).getItemLevel());
+
+                            if (items.get(finalI).getItemLevel() == items.get(finalI).getMaxLevel()){
+                                upgradeButton.setDisabled(true);
+                                upgradeButton.setText("Max\nLevel!");
+                            }
+                        } else {
+                            uiTools.displayDialogWindow(stage);
+                        }
+                    }
+                }
+            });
+        }
+
+        VisScrollPane scrollPane = new VisScrollPane(scrollableTable);
+        scrollPane.setupFadeScrollBars(0, 0);
+
+        VisWindow scrollWindow = new VisWindow("", windowStyle1);
+        scrollWindow.getTitleLabel().setAlignment(Align.center);
+        scrollWindow.setMovable(false);
+        scrollWindow.add(scrollPane);
+
+        stageTable.add(scrollWindow).padBottom(150);
+        stage.addActor(stageTable);
     }
 
     @Override
@@ -186,9 +176,18 @@ public class ShopScreen extends AbstractScreen {
         stage.act(delta);
         hud.update();
 
-        goldLabel.setText(String.valueOf(app.gsm.getPlayer().getGoldCount()));
-
         app.gsm.globalUpdate(delta);
+    }
+
+    /**
+     * Gets the players stat that a particular item modifies and updates
+     * item labels accordingly.
+     */
+    private void updateCurrentStats(){
+        for (int i = 0; i < items.size; i++) {
+            items.get(i).updatePlayerStat();
+            currentBonusLabels.get(i).setText(items.get(i).getCurrentStat());
+        }
     }
 
     @Override
@@ -199,8 +198,8 @@ public class ShopScreen extends AbstractScreen {
 
         app.batch.draw(bg, 0, 0, Application.V_WIDTH, Application.V_HEIGHT);
 
-        glyphLayout.setText(app.fonts.font40, "Shop");
-        app.fonts.font40.draw(app.batch, glyphLayout, viewport.getWorldWidth() / 2 - glyphLayout.width / 2, viewport.getWorldHeight() - glyphLayout.height / 2 );
+        glyphLayout.setText(app.fonts.font40, "Super Awesome Shop");
+        app.fonts.font40.draw(app.batch, glyphLayout, viewport.getWorldWidth() / 2 - glyphLayout.width / 2, viewport.getWorldHeight() - glyphLayout.height / 2 - 50);
 
         app.batch.end();
 

@@ -135,10 +135,6 @@ public class HUD {
         else if (app.gsm.getCurrentState() == GameScreenManager.STATE.SHOP)
             shopButton.setColor(buttonSelectColor);
 
-        //TODO remove this later when final shop is complete
-        else if (app.gsm.getCurrentState() == GameScreenManager.STATE.SHOP2)
-            shopButton.setColor(buttonSelectColor);
-
         logLabel.setText(String.valueOf(NumberFormat.getInstance(Locale.getDefault()).format(app.prefs.getInteger("playerLogs"))));
         goldLabel.setText(String.valueOf(NumberFormat.getInstance(Locale.getDefault()).format(app.prefs.getInteger("playerGold"))));
         playerLevel.setText("Level: " + String.valueOf(NumberFormat.getInstance(Locale.getDefault()).format(app.prefs.getInteger("playerLevel"))));
@@ -202,9 +198,9 @@ public class HUD {
 
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if (app.gsm.getCurrentState() != GameScreenManager.STATE.SHOP2) {
-                    app.gsm.setScreen(GameScreenManager.STATE.SHOP2);
-                } else if (app.gsm.getCurrentState() == GameScreenManager.STATE.SHOP2) {
+                if (app.gsm.getCurrentState() != GameScreenManager.STATE.SHOP) {
+                    app.gsm.setScreen(GameScreenManager.STATE.SHOP);
+                } else if (app.gsm.getCurrentState() == GameScreenManager.STATE.SHOP) {
                     app.gsm.setScreen(GameScreenManager.STATE.PLAY);
                 }
             }

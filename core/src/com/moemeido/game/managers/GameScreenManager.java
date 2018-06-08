@@ -17,7 +17,6 @@ public class GameScreenManager {
     private MainMenuScreen mainMenuScreen;
     private PlayScreen playScreen;
     private ShopScreen shopScreen;
-    private ShopScreen2 shopScreen2;
     private WorkerScreen workerScreen;
     private LoggingScreen loggingScreen;
     private WorkshopScreen workshopScreen;
@@ -27,7 +26,6 @@ public class GameScreenManager {
         MAIN_MENU,
         PLAY,
         SHOP,
-        SHOP2,
         LOGGING,
         WORKSHOP,
         WORKERS
@@ -47,7 +45,6 @@ public class GameScreenManager {
         playScreen = new PlayScreen(app);
         mainMenuScreen = new MainMenuScreen(app);
         shopScreen = new ShopScreen(app);
-        shopScreen2 = new ShopScreen2(app);
         workerScreen = new WorkerScreen(app);
         loggingScreen = new LoggingScreen(app);
         workshopScreen = new WorkshopScreen(app);
@@ -56,7 +53,6 @@ public class GameScreenManager {
         gameScreens.put(STATE.PLAY, playScreen);
         gameScreens.put(STATE.MAIN_MENU, mainMenuScreen);
         gameScreens.put(STATE.SHOP, shopScreen);
-        gameScreens.put(STATE.SHOP2, shopScreen2);
         gameScreens.put(STATE.WORKERS, workerScreen);
         gameScreens.put(STATE.LOGGING, loggingScreen);
         gameScreens.put(STATE.WORKSHOP, workshopScreen);
