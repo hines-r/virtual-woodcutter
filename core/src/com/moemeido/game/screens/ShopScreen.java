@@ -198,8 +198,8 @@ public class ShopScreen extends AbstractScreen {
 
         app.batch.draw(bg, 0, 0, Application.V_WIDTH, Application.V_HEIGHT);
 
-        glyphLayout.setText(app.fonts.font40, "Super Awesome Shop");
-        app.fonts.font40.draw(app.batch, glyphLayout, viewport.getWorldWidth() / 2 - glyphLayout.width / 2, viewport.getWorldHeight() - glyphLayout.height / 2 - 50);
+        glyphLayout.setText(app.fonts.font50, "Super Awesome Shop");
+        app.fonts.font50.draw(app.batch, glyphLayout, viewport.getWorldWidth() / 2 - glyphLayout.width / 2, viewport.getWorldHeight() - glyphLayout.height / 2 - 80);
 
         app.batch.end();
 
