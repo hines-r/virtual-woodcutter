@@ -100,7 +100,7 @@ public class Workshop extends AbstractWorkingEntity  {
         // Updates the text of labels and buttons for when they're upgraded
         upgradeWindow.getTitleLabel().setText("Workshop Level " + level);
         intakeAmountLabel.setText(String.valueOf(currentIntake));
-        goldYieldAmountLabel.setText(String.valueOf(currentYield));
+        goldYieldAmountLabel.setText(String.valueOf(currentYield + app.gsm.getPlayer().calcBonusGoldToGive(currentYield)));
         timeAmountLabel.setText(String.format(Locale.getDefault(), "%.1f", totalWorkTime) + "s");
         upgradeDynamicButton.setText("Level " + level);
         upgradeWindowButton.setText("Upgrade!\n" + upgradeCost + "g");
@@ -119,7 +119,7 @@ public class Workshop extends AbstractWorkingEntity  {
         }
 
         app.fonts.font20.draw(batch, "Intake: " + currentIntake, x, y - 50);
-        app.fonts.font20.draw(batch, "Yield: " + currentYield + "g", x, y - 75);
+        app.fonts.font20.draw(batch, "Yield: " + (currentYield + app.gsm.getPlayer().calcBonusGoldToGive(currentYield)) + "g", x, y - 75);
 
         if (readyToCollect) {
             stateTime2 += Gdx.graphics.getDeltaTime();
@@ -272,7 +272,15 @@ public class Workshop extends AbstractWorkingEntity  {
     }
 
     private void collectYields() {
-        app.gsm.getPlayer().setGoldCount(app.prefs.getInteger("playerGold") + currentYield);
+
+
+        System.out.println("current: " + app.prefs.getInteger("playerGold"));
+        System.out.println("yield: " + currentYield);
+        System.out.println("bonus: " + app.gsm.getPlayer().calcBonusGoldToGive(currentYield));
+        System.out.println("amount to give: " + (currentYield + app.gsm.getPlayer().calcBonusGoldToGive(currentYield)));
+        System.out.println("set gold to: " + (app.prefs.getInteger("playerGold") + currentYield + app.gsm.getPlayer().calcBonusGoldToGive(currentYield)));
+
+        app.gsm.getPlayer().setGoldCount(app.prefs.getInteger("playerGold") + currentYield + app.gsm.getPlayer().calcBonusGoldToGive(currentYield));
         readyToCollect = false;
     }
 

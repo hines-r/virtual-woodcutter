@@ -331,7 +331,7 @@ public class PlayScreen extends AbstractScreen {
                 player.receiveLogs(log.getLogYield());
             }
 
-            player.setLogCount(app.prefs.getInteger("playerLogs") + tree.getLogsToDrop());
+            player.setLogCount(app.prefs.getInteger("playerLogs") + tree.getLogsToDrop() + app.gsm.getPlayer().calcBonusLogsToGive(tree.getLogsToDrop()));
             tree.setCurrentLife(tree.getCurrentLife() - 1);
             tree.resetDrops();
         }

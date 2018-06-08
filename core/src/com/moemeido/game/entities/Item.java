@@ -44,35 +44,37 @@ public class Item implements IUpgradable {
                 itemName = "Hatchet Upgrade";
                 description = "Increase the cutting power of your axe!";
                 itemCost = 250;
+                maxLevel = 9;
                 break;
             case BOOTS:
                 itemTex = atlas.findRegion("boots");
                 itemName = "Boots Upgrade";
                 description = "Move more quickly between trees!";
                 itemCost = 250;
+                maxLevel = 9;
                 break;
             case LOG_MODIFIER:
                 itemTex = atlas.findRegion("log1");
                 itemName = "More Logs!";
                 description = "Increases logs earned by 10%";
                 itemCost = 1000;
+                maxLevel = 10;
                 break;
             case GOLD_MODIFIER:
                 itemTex = atlas.findRegion("coin2");
                 itemName = "More Gold!";
                 description = "Increases gold earned by 10%";
                 itemCost = 10000;
+                maxLevel = 10;
                 break;
         }
 
         baseCost = itemCost;
         growthModifier = 1.15f;
-        maxLevel = 9;
 
         // only adds item to prefs if they have been upgraded
         if (isInPrefs()){
             updateExistingItem();
-            return;
         }
         else{
             itemLevel = 0;
@@ -96,6 +98,12 @@ public class Item implements IUpgradable {
             case BOOTS:
                 currentStat = "Current speed: " + app.gsm.getPlayer().getMovementSpeed();
                 break;
+            case GOLD_MODIFIER:
+                currentStat = "Current bonus: " + (int) (app.gsm.getPlayer().getGoldModifier() * 100f) + "%";
+                break;
+            case LOG_MODIFIER:
+                currentStat = "Current bonus: " + (int) (app.gsm.getPlayer().getLogModifier() * 100f) + "%";
+                break;
         }
     }
 
@@ -117,6 +125,12 @@ public class Item implements IUpgradable {
                 break;
             case BOOTS:
                 app.gsm.getPlayer().setMovementSpeed(app.gsm.getPlayer().getMovementSpeed() + 10f);
+                break;
+            case GOLD_MODIFIER:
+                app.gsm.getPlayer().setGoldModifier(app.gsm.getPlayer().getGoldModifier() + .1f);
+                break;
+            case LOG_MODIFIER:
+                app.gsm.getPlayer().setLogModifier(app.gsm.getPlayer().getLogModifier() + .1f);
                 break;
         }
 

@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.utils.Array;
 import com.moemeido.game.Application;
 import com.moemeido.game.utils.LevelScaling;
 
@@ -55,6 +54,9 @@ public class Player {
     private int previousExperience;
     private float growthModifier;
 
+    private float goldModifier;
+    private float logModifier;
+
     public Player(Application app, float x, float y) {
         this.app = app;
         this.x = x;
@@ -65,7 +67,6 @@ public class Player {
         powers = new HashMap<PowerUp.POWER, PowerUp>();
 
         strength = app.prefs.getFloat("playerStrength");
-
         if (strength <= 0) {
             strength = 1f; // base amount of strength
             app.prefs.putFloat("playerStrength", strength).flush(); // sets player prefs strength if it's the first initialization
@@ -75,13 +76,14 @@ public class Player {
         currentStrength = strength;
 
         movementSpeed = app.prefs.getFloat("playerMovSpeed");
-
         if (movementSpeed <= 0) {
             movementSpeed = 300f;
             app.prefs.putFloat("playerMovSpeed", movementSpeed).flush(); // sets player prefs movement speed if it's the first initialization
             System.out.println("Setting speed to: " + movementSpeed);
         }
 
+        goldModifier = app.prefs.getFloat("goldModifier");
+        logModifier = app.prefs.getFloat("logModifier");
         level = app.prefs.getInteger("playerLevel");
         experience = app.prefs.getInteger("playerXp");
 
@@ -180,6 +182,16 @@ public class Player {
 
     }
 
+    public int calcBonusLogsToGive(int amountToGive){
+        float bonus = amountToGive * logModifier;
+        return (int) (Math.round(bonus * 100f) / 100f);
+    }
+
+    public int calcBonusGoldToGive(int amountToGive){
+        float bonus = amountToGive * goldModifier;
+        return (int) (Math.round(bonus * 100f) / 100f);
+    }
+
     // Player prefs setters
     public void setLogCount(int logCount) {
         app.prefs.putInteger("playerLogs", logCount);
@@ -216,6 +228,24 @@ public class Player {
     public void setMovementSpeed(float movementSpeed) {
         app.prefs.putFloat("playerMovSpeed", movementSpeed).flush();
         this.movementSpeed = movementSpeed;
+    }
+
+    public void setGoldModifier(float goldModifier) {
+        app.prefs.putFloat("goldModifier", goldModifier).flush();
+        this.goldModifier = goldModifier;
+    }
+
+    public void setLogModifier(float logModifier) {
+        app.prefs.putFloat("logModifier", logModifier).flush();
+        this.logModifier = logModifier;
+    }
+
+    public float getLogModifier() {
+        return Math.round(logModifier * 100f) / 100f;
+    }
+
+    public float getGoldModifier() {
+        return Math.round(goldModifier * 100f) / 100f;
     }
 
     // Player prefs getters

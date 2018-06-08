@@ -41,12 +41,11 @@ public class WorkerScreen extends AbstractScreen {
 
     private CollectionBox collectionBox;
 
-    private VisWindow upgradeWindow, dialogWindow;
+    private VisWindow upgradeWindow;
     private VisLabel levelLabel, logAmountLabel, timeAmountLabel, speedAmountLabel;
     private VisProgressBar levelBar;
     private VisTextButton windowUpgradeButton;
 
-    private VisTable gridTable;
     private Array<Image> unlockGrid;
 
     private UITools uiTools;
@@ -295,10 +294,10 @@ public class WorkerScreen extends AbstractScreen {
     }
 
     private void createWorkerGrid(VisTable table, int rows, int columns) {
-        gridTable = new VisTable();
+        VisTable gridTable = new VisTable();
         gridTable.setDebug(false);
 
-        for(int r = 0; r < rows; r++){
+        for(int r = 0; r < rows; r++) {
             for (int c = 0; c < columns; c++) {
                 Image lockedImg = new Image(atlas.findRegion("padlock"));
                 unlockGrid.add(lockedImg);
@@ -341,7 +340,7 @@ public class WorkerScreen extends AbstractScreen {
 
     private void updateUpgradeTable(){
         levelLabel.setText("Level " + obtainWorkerLevel());
-        logAmountLabel.setText(String.valueOf(workers.first().getLogAmount()));
+        logAmountLabel.setText(String.valueOf(workers.first().getLogAmount() + app.gsm.getPlayer().calcBonusLogsToGive(workers.first().getLogAmount())));
         timeAmountLabel.setText(String.format(Locale.getDefault(), "%.1f", workers.first().getTotalGatherTime()) + "s");
         speedAmountLabel.setText(String.format(Locale.getDefault(), "%.1f", workers.first().getMovementSpeed()));
 

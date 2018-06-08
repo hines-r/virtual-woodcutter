@@ -140,7 +140,8 @@ public class Worker implements IUpgradable {
         else if (returnBounds.overlaps(workerBounds) && !moveToTree && !gathering) {
             moveToTree = true;
             Label.LabelStyle labelStyle1 = new Label.LabelStyle(app.fonts.font30, Color.WHITE);
-            Label yieldLabel = new Label("+" + String.valueOf(logAmount), labelStyle1);
+
+            Label yieldLabel = new Label("+" + String.valueOf(logAmount + app.gsm.getPlayer().calcBonusLogsToGive(logAmount)), labelStyle1);
             yieldLabel.setPosition(returnBounds.x + MathUtils.random(-25, 25), returnBounds.y + returnBounds.height + 10 + MathUtils.random(0, 55));
             yieldLabel.addAction(
                     Actions.sequence(
@@ -150,7 +151,7 @@ public class Worker implements IUpgradable {
                             Actions.removeActor()));
             stage.addActor(yieldLabel);
 
-            app.gsm.getPlayer().setLogCount(app.prefs.getInteger("playerLogs") + logAmount);
+            app.gsm.getPlayer().setLogCount(app.prefs.getInteger("playerLogs") + logAmount + app.gsm.getPlayer().calcBonusLogsToGive(logAmount));
 
             returnComplete = true;
             returningLogs = false;
@@ -242,7 +243,6 @@ public class Worker implements IUpgradable {
     public int getLevel() {
         return level;
     }
-
 
     public int getLogAmount() {
         return logAmount;

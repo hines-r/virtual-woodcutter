@@ -88,7 +88,7 @@ public class LoggingTree extends AbstractWorkingEntity {
         upgradeWindow.getTitleLabel().setText("Trees Level " + level);
         upgradeWindowButton.setText("Upgrade\n" + upgradeCost + "g");
 
-        yieldAmountLabel.setText(String.valueOf(currentYield));
+        yieldAmountLabel.setText(String.valueOf(currentYield + app.gsm.getPlayer().calcBonusLogsToGive(currentYield)));
         timeAmountLabel.setText(String.format(Locale.getDefault(), "%.1f", totalWorkTime) + "s");
     }
 
@@ -215,7 +215,7 @@ public class LoggingTree extends AbstractWorkingEntity {
 
         stateTime += Gdx.graphics.getDeltaTime();
 
-        app.fonts.font20.draw(batch, "Yield: " + currentYield + " logs", x, y - 50);
+        app.fonts.font20.draw(batch, "Yield: " + (currentYield + app.gsm.getPlayer().calcBonusLogsToGive(currentYield)) + " logs", x, y - 50);
 
         if (readyToCollect) {
             batch.draw((TextureRegion)collectAnimation.getKeyFrame(stateTime, true),
@@ -228,7 +228,7 @@ public class LoggingTree extends AbstractWorkingEntity {
 
     public boolean checkTouch(Vector3 touch) {
         if (bounds.contains(touch.x, touch.y) && readyToCollect && !app.gsm.hasVisibleWindow()) {
-            app.gsm.getPlayer().setLogCount(app.prefs.getInteger("playerLogs") + currentYield);
+            app.gsm.getPlayer().setLogCount(app.prefs.getInteger("playerLogs") + currentYield + app.gsm.getPlayer().calcBonusLogsToGive(currentYield));
             readyToCollect = false;
             working = true;
             stateTime = 0f;
