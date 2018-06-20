@@ -8,13 +8,12 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.kotcrab.vis.ui.VisUI;
-import com.moemeido.game.managers.MyAssetManager;
 import com.moemeido.game.managers.GameScreenManager;
+import com.moemeido.game.managers.MyAssetManager;
 import com.moemeido.game.managers.MyFontManager;
 import com.moemeido.game.utils.UITools;
 
 import java.util.concurrent.TimeUnit;
-
 
 public class Application extends Game {
 

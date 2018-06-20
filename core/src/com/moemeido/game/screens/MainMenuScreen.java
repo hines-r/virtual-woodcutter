@@ -2,7 +2,6 @@ package com.moemeido.game.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -16,7 +15,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.moemeido.game.Application;
 import com.moemeido.game.managers.GameScreenManager;
 import com.moemeido.game.managers.MyInputProcessor;
-
 
 public class MainMenuScreen extends AbstractScreen {
 

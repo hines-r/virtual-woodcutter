@@ -4,10 +4,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
-import com.kotcrab.vis.ui.VisUI;
 import com.moemeido.game.Application;
 import com.moemeido.game.managers.GameScreenManager;
-
 
 public class LoadingScreen extends AbstractScreen {
 
