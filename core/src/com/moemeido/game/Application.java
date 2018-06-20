@@ -31,7 +31,6 @@ public class Application extends Game {
 	public SpriteBatch batch;
 	public ShapeRenderer shapeRenderer;
 	public GameScreenManager gsm;
-	public MyAssetManager manager;
 	public AssetManager assets;
 	public MyFontManager fonts;
 	public Preferences prefs;
@@ -59,10 +58,11 @@ public class Application extends Game {
 
 		VisUI.load();
 
+		assets = new AssetManager();
+		new MyAssetManager(this);
+
 		batch = new SpriteBatch();
 		shapeRenderer = new ShapeRenderer();
-		assets = new AssetManager();
-		manager = new MyAssetManager(this);
 		fonts = new MyFontManager(this);
 		gsm = new GameScreenManager(this);
 	}
