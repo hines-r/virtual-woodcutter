@@ -1,4 +1,4 @@
-# virtual-woodcutter
+# Virtual Woodcutter
 My first Android game written using Java and LibGDX.
 
 <p align="center">
